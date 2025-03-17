@@ -1,6 +1,6 @@
 <template>
   <nav
-    class="flex justify-between items-center pl-2 pr-2 pt-4 pb-4 border-b-[1px] border-gray-400/15"
+    class="flex justify-between items-center pl-2 pr-2 pt-4 pb-4 shadow-md border-b-[1px] border-gray-400/15 z-10"
   >
     <ul class="flex gap-2">
       <li>
