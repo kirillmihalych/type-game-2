@@ -1,5 +1,7 @@
 <template>
-  <div>Игра тут</div>
+  <div>
+    <TheGame />
+  </div>
 </template>
 
 <script setup lang="ts"></script>
