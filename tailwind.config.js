@@ -2,8 +2,11 @@
 export default {
   content: [],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        display: ['JetBrains Mono', 'monospace'],
+      },
+    },
   },
   plugins: [],
-}
-
+};
