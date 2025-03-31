@@ -1,7 +1,7 @@
 <template>
-  <div
-    class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35"
-  ></div>
+  <div class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35">
+    <TheWords />
+  </div>
 </template>
 
 <script setup lang="ts"></script>
