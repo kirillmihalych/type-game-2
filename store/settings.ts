@@ -1,9 +1,13 @@
 export const useSettingsStore = defineStore(
   'settings',
   () => {
-    const fontSize = ref(3);
+    const fontSize = ref('2.75');
 
-    return { fontSize };
+    function setFontSize(selectedFontSize: string) {
+      fontSize.value = selectedFontSize;
+    }
+
+    return { fontSize, setFontSize };
   },
   {
     persist: {

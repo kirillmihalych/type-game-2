@@ -1,14 +1,14 @@
 <template>
   <div class="p-4">
-    <h2>Настройки</h2>
+    <h2 class="text-2xl text-gray-950">Настройки</h2>
     <section>
-      <h3>Типография</h3>
+      <h3 class="text-lg">Типография</h3>
       <div>
-        <p>Установить размер шрифта в игре</p>
-        <input
-          v-model="settings.fontSize"
-          type="number"
-          class="w-full border-2 border-orange-400"
+        <p class="text-gray-950/50">Установить размер шрифта в игре</p>
+        <InputUi
+          :value="settings.fontSize"
+          :type="'number'"
+          @input="(value) => settings.setFontSize(value)"
         />
       </div>
     </section>
