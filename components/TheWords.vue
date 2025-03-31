@@ -4,13 +4,7 @@
     style="font-size: 2.75rem"
   >
     <div v-for="(word, wordIdx) in words" :key="wordIdx" class="flex flex-wrap">
-      <div
-        v-for="(char, charIdx) in word"
-        :key="charIdx"
-        class="flex items-center justify-center"
-      >
-        {{ char }}
-      </div>
+      <CharCard :word="word" />
     </div>
   </div>
 </template>
