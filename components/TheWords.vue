@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex flex-wrap leading-snug gap-x-[0.5em]"
+    class="flex flex-wrap leading-snug gap-x-[1ch]"
     :style="{ fontSize: settings.fontSize + 'rem' }"
   >
     <div v-for="(word, wordIdx) in words" :key="wordIdx" class="flex flex-wrap">
