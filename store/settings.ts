@@ -3,8 +3,10 @@ export const useSettingsStore = defineStore(
   () => {
     const fontSize = ref('2.75');
 
-    function setFontSize(selectedFontSize: string) {
-      fontSize.value = selectedFontSize;
+    function setFontSize(value: string) {
+      if (value.length > 0) {
+        fontSize.value = value;
+      }
     }
 
     return { fontSize, setFontSize };

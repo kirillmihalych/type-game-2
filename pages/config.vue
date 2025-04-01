@@ -3,14 +3,14 @@
     <h2 class="text-2xl text-gray-950">Настройки</h2>
     <section>
       <h3 class="text-lg">Типография</h3>
-      <div>
+      <form>
         <p class="text-gray-950/50">Установить размер шрифта в игре</p>
         <InputUi
+          type="number"
           :value="settings.fontSize"
-          :type="'number'"
-          @input="(value) => settings.setFontSize(value)"
+          @input="settings.setFontSize"
         />
-      </div>
+      </form>
     </section>
   </div>
 </template>
