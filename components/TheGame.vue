@@ -6,23 +6,40 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
-    <p>{{ gameInput }}</p>
-    <p>{{ currentCharIndex }}</p>
     <input
       type="text"
-      v-model="gameInput"
+      :value="gameInput"
+      @input="onGameInputChange"
       class="border-2 border-orange-500 rounded-md outline-none"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-// "It's a dangerous business, Frodo!"
-const text = ref('dangerous business');
-
+const text = ref("It's a dangerous business, Frodo!");
 const gameInput = ref('');
 const currentWordIndex = ref(0);
+
 const currentCharIndex = computed(() => {
   return gameInput.value.length - 1;
 });
+
+function onGameInputChange(e: Event): void {
+  const isSpace = (e as InputEvent).data === ' ';
+
+  if (isSpace) {
+    handleSpace();
+  } else {
+    setInputValue(e.target as HTMLInputElement);
+  }
+}
+
+function handleSpace(): void {
+  currentWordIndex.value += 1;
+  gameInput.value = '';
+}
+
+function setInputValue(eventTarget: HTMLInputElement): void {
+  gameInput.value = eventTarget.value;
+}
 </script>
