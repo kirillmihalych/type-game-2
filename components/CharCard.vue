@@ -1,5 +1,6 @@
 <template>
   <div
+    ref="chars"
     v-for="(char, charIdx) in props.word"
     :key="charIdx"
     class="flex items-center justify-center"
@@ -26,10 +27,28 @@ const props = defineProps<{
   currentCharIndex: number;
 }>();
 
+const emits = defineEmits<{
+  getCharCoordinates: [coords: any];
+}>();
+
+const chars = useTemplateRef('chars');
+
 function isCharTyped(index: number): boolean {
-  return index <= props.currentCharIndex;
+  return index < props.currentCharIndex;
 }
 function isCharCorrect(index: number): boolean {
   return props.input[index] === props.word[index];
 }
+
+onMounted(() => {
+  emits(
+    'getCharCoordinates',
+    chars.value?.map((char) => {
+      return {
+        left: char.getBoundingClientRect().left,
+        top: char.getBoundingClientRect().top,
+      };
+    })
+  );
+});
 </script>

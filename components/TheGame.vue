@@ -21,7 +21,7 @@ const gameInput = ref('');
 const currentWordIndex = ref(0);
 
 const currentCharIndex = computed(() => {
-  return gameInput.value.length - 1;
+  return gameInput.value.length ? gameInput.value.length - 1 : 0;
 });
 
 function onGameInputChange(e: Event): void {
