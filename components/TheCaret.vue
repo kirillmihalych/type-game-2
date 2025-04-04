@@ -1,5 +1,5 @@
 <template>
-  <div class="caret absolute bg-current rounded-md" :style="caretStyle"></div>
+  <div class="absolute bg-current rounded-md" :style="caretStyle"></div>
 </template>
 
 <script setup lang="ts">
