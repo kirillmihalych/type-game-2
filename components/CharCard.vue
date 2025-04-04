@@ -28,12 +28,14 @@ const props = defineProps<{
 }>();
 
 const emits = defineEmits<{
-  getCharCoordinates: [coords: any];
+  getCharBounding: [bounding: any];
 }>();
 
-export interface CharCoordinates {
+export interface CharBounding {
   left: number;
   top: number;
+  height: number;
+  width: number;
 }
 
 const chars = useTemplateRef('chars');
@@ -44,16 +46,18 @@ function isCharTyped(index: number): boolean {
 function isCharCorrect(index: number): boolean {
   return props.input[index] === props.word[index];
 }
+function getCharBounding() {
+  return chars.value?.map((char) => {
+    return {
+      left: char.getBoundingClientRect().left,
+      top: char.getBoundingClientRect().top,
+      width: char.getBoundingClientRect().width,
+      height: char.getBoundingClientRect().height,
+    };
+  });
+}
 
 onMounted(() => {
-  emits(
-    'getCharCoordinates',
-    chars.value?.map((char): CharCoordinates => {
-      return {
-        left: char.getBoundingClientRect().left,
-        top: char.getBoundingClientRect().top,
-      };
-    })
-  );
+  emits('getCharBounding', getCharBounding());
 });
 </script>

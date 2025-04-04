@@ -5,7 +5,7 @@
     :style="{ fontSize: settings.fontSize + 'rem' }"
   >
     <TheCaret
-      :chars-coords="charListCoordinates"
+      :char-list-bounding="charListBounding"
       :input="input"
       :current-char-index="props.currentCharIndex"
       :current-word-index="props.currentWordIndex"
@@ -13,7 +13,7 @@
     />
     <div v-for="(word, wordIdx) in words" :key="wordIdx" class="flex flex-wrap">
       <CharCard
-        @get-char-coordinates="setCharListCoordinates"
+        @get-char-bounding="setCharBounding"
         :word="word"
         :input="props.input"
         :is-word-active="isWordActive(wordIdx)"
@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { useSettingsStore } from '~/store/settings';
-import type { CharCoordinates } from './CharCard.vue';
+import type { CharBounding } from './CharCard.vue';
 
 const props = defineProps<{
   text: string;
@@ -39,10 +39,10 @@ const wordsWrapper = useTemplateRef('words-wrapper');
 const { left: wrapperLeft, top: wrapperTop } = useElementBounding(wordsWrapper);
 const settings = useSettingsStore();
 
-const charListCoordinates = ref<CharCoordinates[][]>([]);
+const charListBounding = ref<CharBounding[][]>([]);
 
-function setCharListCoordinates(values: CharCoordinates[]): void {
-  charListCoordinates.value.push(values);
+function setCharBounding(values: CharBounding[]): void {
+  charListBounding.value.push(values);
 }
 
 function isWordActive(index: number): boolean {

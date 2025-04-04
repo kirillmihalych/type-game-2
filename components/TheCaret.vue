@@ -1,41 +1,53 @@
 <template>
-  <div
-    class="caret absolute h-[44px] w-1 bg-purple-600"
-    :style="caretStyle"
-  ></div>
+  <div class="caret absolute bg-current rounded-md" :style="caretStyle"></div>
 </template>
 
 <script setup lang="ts">
-import type { CharCoordinates } from './CharCard.vue';
+import type { CharBounding } from './CharCard.vue';
+
+interface WrapperBounding {
+  left: number;
+  top: number;
+}
 
 const props = defineProps<{
-  charsCoords: CharCoordinates[][];
+  charListBounding: CharBounding[][];
   input: string;
   currentWordIndex: number;
   currentCharIndex: number;
-  wrapperBoundings: CharCoordinates;
+  wrapperBoundings: WrapperBounding;
 }>();
 
-const charListCoords = ref(props.charsCoords);
+const charBoundings = ref(props.charListBounding);
 
 const caretPos = ref({
   left: 0,
   top: 0,
 });
+const caretHeight = ref(0);
+const caretWidth = computed(() => {
+  return caretHeight.value * 0.0675;
+});
 const caretStyle = computed(() => {
   return {
     left: caretPos.value.left + 'px',
     top: caretPos.value.top + 'px',
+    height: caretHeight.value + 'px',
+    width: caretWidth.value + 'px',
   };
 });
 
 const currentCharObj = computed(() => {
-  const currentWord = charListCoords.value[props.currentWordIndex];
+  const currentWord = charBoundings.value[props.currentWordIndex];
   return currentWord[props.currentCharIndex];
 });
 const currentCharCoords = computed(() => {
   return {
-    left: currentCharObj.value.left,
+    left:
+      currentCharObj.value.left -
+      props.wrapperBoundings.left +
+      currentCharObj.value.width -
+      caretWidth.value,
     top: currentCharObj.value.top - props.wrapperBoundings.top,
   };
 });
@@ -60,4 +72,8 @@ watch(
     moveCaret();
   }
 );
+
+onUpdated(() => {
+  caretHeight.value = charBoundings.value[0][0].height;
+});
 </script>
