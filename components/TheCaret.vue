@@ -1,10 +1,7 @@
 <template>
   <div
     class="caret absolute h-[44px] w-1 bg-purple-600"
-    :style="{
-      left: leftCaretPos,
-      top: topCaretPos,
-    }"
+    :style="caretStyle"
   ></div>
 </template>
 
@@ -21,48 +18,45 @@ const props = defineProps<{
 
 const charListCoords = ref(props.charsCoords);
 
-const caretStyle = ref({
+const caretPos = ref({
   left: 0,
   top: 0,
 });
-const leftCaretPos = computed(() => {
-  return caretStyle.value.left + 'px';
-});
-const topCaretPos = computed(() => {
-  return caretStyle.value.top + 'px';
-});
-const nextCharCoords = computed(() => {
+const caretStyle = computed(() => {
   return {
-    left: charListCoords.value[props.currentWordIndex][props.currentCharIndex]
-      .left,
-    top:
-      charListCoords.value[props.currentWordIndex][props.currentCharIndex].top -
-      props.wrapperBoundings.top,
+    left: caretPos.value.left + 'px',
+    top: caretPos.value.top + 'px',
+  };
+});
+
+const currentCharObj = computed(() => {
+  const currentWord = charListCoords.value[props.currentWordIndex];
+  return currentWord[props.currentCharIndex];
+});
+const currentCharCoords = computed(() => {
+  return {
+    left: currentCharObj.value.left,
+    top: currentCharObj.value.top - props.wrapperBoundings.top,
   };
 });
 const startWordCoords = computed(() => {
   return {
-    left:
-      charListCoords.value[props.currentWordIndex][0].left -
-      props.wrapperBoundings.left,
-    top:
-      charListCoords.value[props.currentWordIndex][0].top -
-      props.wrapperBoundings.top,
+    left: currentCharObj.value.left - props.wrapperBoundings.left,
+    top: currentCharObj.value.top - props.wrapperBoundings.top,
   };
 });
 
 function moveCaret() {
   if (!props.input) {
-    caretStyle.value = startWordCoords.value;
+    caretPos.value = startWordCoords.value;
   } else {
-    caretStyle.value = nextCharCoords.value;
+    caretPos.value = currentCharCoords.value;
   }
 }
 
 watch(
   () => props.input,
-  (input) => {
-    console.log(input);
+  () => {
     moveCaret();
   }
 );
