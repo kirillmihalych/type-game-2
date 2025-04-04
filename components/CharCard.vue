@@ -31,6 +31,11 @@ const emits = defineEmits<{
   getCharCoordinates: [coords: any];
 }>();
 
+export interface CharCoordinates {
+  left: number;
+  top: number;
+}
+
 const chars = useTemplateRef('chars');
 
 function isCharTyped(index: number): boolean {
@@ -43,7 +48,7 @@ function isCharCorrect(index: number): boolean {
 onMounted(() => {
   emits(
     'getCharCoordinates',
-    chars.value?.map((char) => {
+    chars.value?.map((char): CharCoordinates => {
       return {
         left: char.getBoundingClientRect().left,
         top: char.getBoundingClientRect().top,
