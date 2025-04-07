@@ -3,7 +3,7 @@
     ref="chars"
     v-for="(char, charIdx) in props.word"
     :key="charIdx"
-    class="flex items-center justify-center"
+    class="flex items-center gap-[2px] justify-center"
     :class="
       isCharCorrect(charIdx) && props.isWordActive
         ? 'text-green-500'
@@ -19,17 +19,22 @@
 </template>
 
 <script setup lang="ts">
+import { useCaretStore } from '~/store/caret';
+import type { WrapperBounding } from './TheWords.vue';
+
 const props = defineProps<{
   word: string;
   input: string;
   isWordActive: boolean;
   isWordTyped: boolean;
+  isExtra: boolean;
+  wordIndex: number;
+  currentWordIndex: number;
   currentCharIndex: number;
+  wrapperBounding: WrapperBounding;
 }>();
 
-const emits = defineEmits<{
-  getCharBounding: [bounding: any];
-}>();
+const caretStore = useCaretStore();
 
 export interface CharBounding {
   left: number;
@@ -46,8 +51,11 @@ function isCharTyped(index: number): boolean {
 function isCharCorrect(index: number): boolean {
   return props.input[index] === props.word[index];
 }
-function getCharBounding() {
-  return chars.value?.map((char) => {
+
+const charBoundingsList = ref<CharBounding[] | undefined>([]);
+
+function getCharBoundingTemp() {
+  charBoundingsList.value = chars.value?.map((char): CharBounding => {
     return {
       left: char.getBoundingClientRect().left,
       top: char.getBoundingClientRect().top,
@@ -57,7 +65,31 @@ function getCharBounding() {
   });
 }
 
+const charHeight = computed(() => {
+  return (charBoundingsList.value as CharBounding[])[0].height;
+});
+
+const isCurrentWord = computed(() => {
+  return props.wordIndex === props.currentWordIndex;
+});
+
+watch(
+  () => props.input,
+  () => {
+    if (isCurrentWord.value && !props.isExtra) {
+      caretStore.moveCaret(
+        props.input,
+        (charBoundingsList.value as CharBounding[])[props.currentCharIndex],
+        props.wrapperBounding
+      );
+    }
+  }
+);
+
 onMounted(() => {
-  emits('getCharBounding', getCharBounding());
+  getCharBoundingTemp();
+  caretStore.calcCaretHeight(charHeight.value);
+  // if (charBoundingsList.value) {
+  // }
 });
 </script>
