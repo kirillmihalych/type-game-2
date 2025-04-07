@@ -50,7 +50,10 @@ const wrapperBounding = reactive({
   left: wrapperLeft,
   top: wrapperTop,
 });
-const wordWrapperStyle = reactive({ fontSize: settings.fontSize + 'rem' });
+const wordWrapperStyle = reactive({
+  fontSize: settings.fontSize + 'rem',
+  maxWidth: settings.maxLineLength + 'ch',
+});
 
 function isWordActive(index: number): boolean {
   return index === props.currentWordIndex;

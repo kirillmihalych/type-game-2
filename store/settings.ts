@@ -10,6 +10,7 @@ export const useSettingsStore = defineStore(
       'PT Sans',
       'PT Serif',
     ]);
+    const maxLineLength = ref(30);
 
     function setFontSize(value: string) {
       if (value) {
@@ -17,7 +18,7 @@ export const useSettingsStore = defineStore(
       }
     }
 
-    return { fontSize, setFontSize, fontFamily, fontFamilyList };
+    return { fontSize, setFontSize, fontFamily, fontFamilyList, maxLineLength };
   },
   {
     persist: {

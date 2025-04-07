@@ -49,6 +49,26 @@
           </div>
         </div>
         <!-- end of font family -->
+
+        <!-- max line length -->
+        <div class="grid lg:grid-cols-2 lg:items-center mb-4">
+          <div class="mb-2">
+            <div class="flex items-center gap-2">
+              <Icon name="lucide:letter-text" size="1.5rem" />
+              <h3>Max line length</h3>
+            </div>
+          </div>
+          <div>
+            <input
+              type="number"
+              v-model="settings.maxLineLength"
+              min="30"
+              max="60"
+              class="w-full p-2 shadow-sm border-2 border-gray-950/50 outline-none focus:border-gray-950 hover:border-gray-950 rounded-md transition-colors duration-300"
+            />
+          </div>
+        </div>
+        <!-- end of line length -->
       </section>
     </div>
   </div>
