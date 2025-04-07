@@ -1,7 +1,15 @@
+export type FontFamily = 'PT Mono' | 'PT Sans' | 'PT Serif';
+
 export const useSettingsStore = defineStore(
   'settings',
   () => {
     const fontSize = ref('2.75');
+    const fontFamily = ref<FontFamily>('PT Mono');
+    const fontFamilyList = ref<FontFamily[]>([
+      'PT Mono',
+      'PT Sans',
+      'PT Serif',
+    ]);
 
     function setFontSize(value: string) {
       if (value) {
@@ -9,7 +17,7 @@ export const useSettingsStore = defineStore(
       }
     }
 
-    return { fontSize, setFontSize };
+    return { fontSize, setFontSize, fontFamily, fontFamilyList };
   },
   {
     persist: {

@@ -4,8 +4,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        // display: ['JetBrains Mono', 'monospace'],
-        display: ['"Roboto"', 'sans-serif'],
+        mono: ['PT Mono', 'monospaced'],
+        serif: ['PT Serif', 'serif'],
+        sans: ['PT Sans', 'sans-serif'],
       },
     },
   },

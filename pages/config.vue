@@ -22,6 +22,33 @@
             @input="settings.setFontSize"
           />
         </form>
+        <!-- font family form -->
+        <div class="grid lg:grid-cols-2 lg:items-center mb-4">
+          <div class="mb-2">
+            <div class="flex items-center gap-2">
+              <Icon name="lucide:letter-text" size="1.5rem" />
+              <h3>Font family</h3>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button
+              v-for="fontFamily in settings.fontFamilyList"
+              :key="fontFamily"
+              @click="settings.fontFamily = fontFamily"
+              class="flex-1 border-2 rounded-md hover:bg-slate-100"
+              :class="[
+                settings.fontFamily === 'PT Mono'
+                  ? 'font-mono'
+                  : settings.fontFamily === 'PT Serif'
+                  ? 'font-serif'
+                  : 'font-sans',
+              ]"
+            >
+              {{ fontFamily }}
+            </button>
+          </div>
+        </div>
+        <!-- end of font family -->
       </section>
     </div>
   </div>
