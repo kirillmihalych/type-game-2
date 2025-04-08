@@ -1,3 +1,5 @@
+import { useSettingsStore } from './settings';
+
 interface Coords {
   left: number;
   top: number;
@@ -11,17 +13,19 @@ interface CharBounding {
 }
 
 export const useCaretStore = defineStore('caret', () => {
-  const caretHeight = ref(0);
-  const caretWidth = ref(2);
+  const settings = useSettingsStore();
+
+  const caretHeight = computed(() => {
+    return Number(settings.fontSize) * 16 * 1.375;
+  });
+  const caretWidth = computed(() => {
+    return Number(settings.fontSize) * 16 * 0.0675;
+  });
 
   const caretPos = ref<Coords>({
     left: 0,
     top: 0,
   });
-
-  function calcCaretHeight(charHeight: number) {
-    caretHeight.value = charHeight;
-  }
 
   function getStartWordCoords(charCoords: Coords, parentCoords: Coords) {
     return {
@@ -49,5 +53,5 @@ export const useCaretStore = defineStore('caret', () => {
     }
   }
 
-  return { caretPos, caretHeight, caretWidth, moveCaret, calcCaretHeight };
+  return { caretPos, caretHeight, caretWidth, moveCaret };
 });

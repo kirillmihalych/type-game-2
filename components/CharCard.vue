@@ -65,10 +65,6 @@ function getCharBoundingTemp() {
   });
 }
 
-const charHeight = computed(() => {
-  return (charBoundingsList.value as CharBounding[])[0].height;
-});
-
 const isCurrentWord = computed(() => {
   return props.wordIndex === props.currentWordIndex;
 });
@@ -88,8 +84,5 @@ watch(
 
 onMounted(() => {
   getCharBoundingTemp();
-  caretStore.calcCaretHeight(charHeight.value);
-  // if (charBoundingsList.value) {
-  // }
 });
 </script>
