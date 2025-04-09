@@ -5,25 +5,15 @@
     :style="wordWrapperStyle"
   >
     <TheCaret />
-    <div v-for="(word, wordIdx) in words" :key="wordIdx" class="flex flex-wrap">
-      <CharCard
+    <div v-for="(word, wordIdx) in words" :key="wordIdx">
+      <WordCard
         :word="word"
-        :input="props.input"
-        :is-word-active="isWordActive(wordIdx)"
-        :is-word-typed="isWordTyped(wordIdx)"
-        :is-extra="isExtra"
         :word-index="wordIdx"
+        :input="props.input"
         :current-word-index="props.currentWordIndex"
         :current-char-index="props.currentCharIndex"
         :wrapper-bounding="wrapperBounding"
       />
-      <div v-if="isExtra && isCurrentWord(wordIdx)" class="flex items-center">
-        <ExtraChar
-          :extra-chars="extraChars"
-          :input="props.input"
-          :wrapper-boundings="wrapperBounding"
-        />
-      </div>
     </div>
   </div>
 </template>
@@ -55,31 +45,7 @@ const wordWrapperStyle = reactive({
   maxWidth: settings.maxLineLength + 'ch',
 });
 
-function isWordActive(index: number): boolean {
-  return index === props.currentWordIndex;
-}
-
-function isWordTyped(index: number): boolean {
-  return index < props.currentWordIndex;
-}
-
 const words = computed(() => {
   return props.text.split(' ');
 });
-
-function isCurrentWord(index: number) {
-  return props.currentWordIndex === index;
-}
-
-// === extra ===
-const isExtra = computed(() => {
-  return props.input.length > words.value[props.currentWordIndex].length;
-});
-const extraChars = computed(() => {
-  return props.input.slice(
-    words.value[props.currentWordIndex].length,
-    props.input.length
-  );
-});
-// === extra ===
 </script>
