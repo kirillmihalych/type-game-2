@@ -3,6 +3,7 @@
     <p>wpm: {{ wpm }}</p>
     <p>rawWpm: {{ rawWpm }}</p>
     <p>time : {{ time }}</p>
+    <p>acc: {{ accuracy }}</p>
   </div>
 </template>
 
@@ -12,52 +13,62 @@ const props = defineProps<{
   inputHistory: string[];
   time: number;
 }>();
-const { text, inputHistory, time } = toRefs(props);
 
-const { wpm, rawWpm } = useWpm(text, inputHistory, time);
+const correctWordsHistory = computed(() => {
+  return props.inputHistory.filter(
+    (word, index) => word === props.text.split(' ')[index]
+  );
+});
 
-function useWpm(
-  text: Ref<string>,
-  inputHistory: Ref<string[]>,
-  time: Ref<number>
-) {
-  const correctWordsHistory = computed(() => {
-    return inputHistory.value.filter(
-      (word, index) => word === text.value.split(' ')[index]
-    );
-  });
+const mistakes = computed(() => {
+  let mistakes = 0;
+  const flatHistory = props.inputHistory.join(' ');
+  for (let i = 0; i < flatHistory.length; i++) {
+    if (flatHistory[i] !== props.text[i]) {
+      mistakes += 1;
+    }
+  }
+  return mistakes;
+});
 
-  const rawSpaces = computed(() => {
-    return inputHistory.value.length;
-  });
+const rawSpaces = computed(() => {
+  return props.inputHistory.length;
+});
 
-  const correctSpaces = computed(() => {
-    return correctWordsHistory.value.length;
-  });
+const correctSpaces = computed(() => {
+  return correctWordsHistory.value.length;
+});
 
-  const charsNumber = computed(() => {
-    return correctWordsHistory.value.join('').length / 5 + correctSpaces.value;
-  });
+const charsNumber = computed(() => {
+  return correctWordsHistory.value.join('').length / 5 + correctSpaces.value;
+});
 
-  const charsNumberRaw = computed(() => {
-    return inputHistory.value.join('').length / 5 + rawSpaces.value;
-  });
+const charsNumberRaw = computed(() => {
+  return props.inputHistory.join('').length / 5 + rawSpaces.value;
+});
 
-  const timeNormalized = computed(() => {
-    const timeNorm = 60 / time.value;
-    return !isFinite(timeNorm) ? 0 : timeNorm;
-  });
+const timeNormalized = computed(() => {
+  const timeNorm = 60 / props.time;
+  return !isFinite(timeNorm) ? 0 : timeNorm;
+});
 
-  const rawWpm = computed(() => {
-    const rawWpm = charsNumberRaw.value * timeNormalized.value;
-    return isNaN(rawWpm) ? 0 : Math.round(rawWpm);
-  });
+const rawWpm = computed(() => {
+  const rawWpm = charsNumberRaw.value * timeNormalized.value;
+  return isNaN(rawWpm) ? 0 : Math.round(rawWpm);
+});
 
-  const wpm = computed(() => {
-    const wpm = charsNumber.value * timeNormalized.value;
-    return isNaN(wpm) ? 0 : Math.round(wpm);
-  });
+const wpm = computed(() => {
+  const wpm = charsNumber.value * timeNormalized.value;
+  return isNaN(wpm) ? 0 : Math.round(wpm);
+});
 
-  return { rawWpm, wpm };
-}
+const accuracy = computed(() => {
+  const acc = Math.round(
+    100 -
+      (mistakes.value /
+        (mistakes.value + props.inputHistory.join(' ').length)) *
+        100
+  );
+  return isNaN(acc) ? 0 : acc;
+});
 </script>
