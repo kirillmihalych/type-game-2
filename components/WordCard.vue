@@ -6,9 +6,9 @@
       :key="charIdx"
       class="flex items-center gap-[2px] justify-center"
       :class="
-        colorCorrectChar(charIdx) || colorWordTyped
+        colorCorrectChar(char, charIdx)
           ? 'text-green-500'
-          : colorErrorChar(charIdx)
+          : colorErrorChar(char, charIdx)
           ? 'text-red-500'
           : 'text-gray-950/50'
       "
@@ -32,11 +32,19 @@ const props = defineProps<{
   word: string;
   wordIndex: number;
   input: string;
+  inputHistory: string[];
   currentWordIndex: number;
   currentCharIndex: number;
   wrapperBounding: WrapperBounding;
 }>();
-const { input, word } = toRefs(props);
+const {
+  input,
+  word,
+  wordIndex,
+  inputHistory,
+  currentWordIndex,
+  currentCharIndex,
+} = toRefs(props);
 
 export interface CharBounding {
   left: number;
@@ -53,30 +61,18 @@ const { charBoundings } = useChars(chars);
 const extra = useTemplateRef('extra');
 const { isExtra, extraChars } = useExtra(input, word);
 
+const { colorCorrectChar, colorErrorChar } = useCharColor(
+  word,
+  wordIndex,
+  input,
+  inputHistory,
+  currentWordIndex,
+  currentCharIndex
+);
+
 const isCurrentWord = computed(() => {
   return props.wordIndex === props.currentWordIndex;
 });
-const colorWordTyped = computed(() => {
-  return props.wordIndex < props.currentWordIndex;
-});
-
-function isCharTyped(index: number): boolean {
-  return index <= props.currentCharIndex;
-}
-function isCharCorrect(index: number): boolean {
-  return props.input[index] === props.word[index];
-}
-
-function colorCorrectChar(index: number) {
-  if (isCurrentWord.value && props.input) {
-    return isCharTyped(index) && isCharCorrect(index);
-  }
-}
-function colorErrorChar(index: number) {
-  if (isCurrentWord.value && props.input) {
-    return isCharTyped(index) && !isCharCorrect(index);
-  }
-}
 
 watch(
   () => props.input,
@@ -130,5 +126,50 @@ function useExtra(input: Ref<string>, word: Ref<string>) {
   });
 
   return { isExtra, extraChars };
+}
+
+function useCharColor(
+  word: Ref<string>,
+  wordIndex: Ref<number>,
+  input: Ref<string>,
+  inputHistory: Ref<string[]>,
+  currentWordIndex: Ref<number>,
+  currentCharIndex: Ref<number>
+) {
+  const isCurrentWord = computed(() => {
+    return wordIndex.value === currentWordIndex.value;
+  });
+  const isWordTyped = computed(() => {
+    return wordIndex.value < currentWordIndex.value;
+  });
+
+  function isCharTyped(index: number): boolean {
+    return index <= currentCharIndex.value;
+  }
+
+  function isCharCorrect(index: number): boolean {
+    return input.value[index] === word.value[index];
+  }
+
+  function colorCorrectChar(char: string, index: number) {
+    if (isWordTyped.value) {
+      return inputHistory.value[wordIndex.value][index] === char;
+    }
+    if (isCurrentWord.value && input.value) {
+      return isCharTyped(index) && isCharCorrect(index);
+    }
+  }
+
+  function colorErrorChar(char: string, index: number) {
+    if (isWordTyped.value) {
+      const historyChar = inputHistory.value[wordIndex.value][index];
+      return historyChar !== char && historyChar !== undefined;
+    }
+    if (isCurrentWord.value && input.value) {
+      return isCharTyped(index) && !isCharCorrect(index);
+    }
+  }
+
+  return { colorCorrectChar, colorErrorChar };
 }
 </script>
