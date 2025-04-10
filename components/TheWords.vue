@@ -10,6 +10,7 @@
         :word="word"
         :word-index="wordIdx"
         :input="props.input"
+        :input-history="inputHistory"
         :current-word-index="props.currentWordIndex"
         :current-char-index="props.currentCharIndex"
         :wrapper-bounding="wrapperBounding"
@@ -29,6 +30,7 @@ export interface WrapperBounding {
 const props = defineProps<{
   text: string;
   input: string;
+  inputHistory: string[];
   currentWordIndex: number;
   currentCharIndex: number;
 }>();
