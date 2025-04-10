@@ -1,9 +1,12 @@
 <template>
   <div>
+    <p class="bg-orange-300">{{ timeNormalized }}</p>
     <p>wpm: {{ wpm }}</p>
     <p>rawWpm: {{ rawWpm }}</p>
     <p>time : {{ time }}</p>
     <p>acc: {{ accuracy }}</p>
+    {{ props.inputHistory.join('').length }}
+    {{ props.inputHistory.join('').split('').length }}
   </div>
 </template>
 
@@ -40,11 +43,11 @@ const correctSpaces = computed(() => {
 });
 
 const charsNumber = computed(() => {
-  return correctWordsHistory.value.join('').length / 5 + correctSpaces.value;
+  return (correctWordsHistory.value.join('').length + correctSpaces.value) / 5;
 });
 
 const charsNumberRaw = computed(() => {
-  return props.inputHistory.join('').length / 5 + rawSpaces.value;
+  return (props.inputHistory.join('').length + rawSpaces.value) / 5;
 });
 
 const timeNormalized = computed(() => {

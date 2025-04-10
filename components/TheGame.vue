@@ -1,8 +1,8 @@
 <template>
   <div class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35">
     <TheStats :text="text" :input-history="inputHistory" :time="timer" />
-    <p>{{ inputHistory }} {{ timer }}</p>
     <button @click="resetGame">reset</button>
+    <button @click="startTimer">start timer</button>
     <TheWords
       :text="text"
       :input="gameInput"
@@ -10,6 +10,7 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
+    <p>{{ inputHistory }}</p>
     <input
       type="text"
       :value="gameInput"
@@ -59,6 +60,7 @@ const {
   resume: startTimer,
 } = useInterval(1000, {
   controls: true,
+  immediate: true,
 });
 
 const time = ref(0);
@@ -66,7 +68,6 @@ const isGameStarted = ref(false);
 
 function startGame() {
   isGameStarted.value = true;
-  startTimer();
 }
 
 function resetGame() {
@@ -74,16 +75,22 @@ function resetGame() {
   gameInput.value = '';
   currentWordIndex.value = 0;
   isGameStarted.value = false;
+  inputHistory.value = [];
   pauseTimer();
   resetTimer();
 }
 
-watch(
-  () => isInputExist.value,
-  () => {
+watch(isInputExist, (newValue) => {
+  if (newValue) {
     startGame();
   }
-);
+});
+
+watch(isGameStarted, (newValue) => {
+  if (newValue) {
+    startTimer();
+  }
+});
 
 const isTextEnds = computed(() => {
   return currentWordIndex.value > text.value.split(' ').length - 1;
