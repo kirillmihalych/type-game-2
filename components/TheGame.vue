@@ -1,5 +1,6 @@
 <template>
   <div class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35">
+    <TheStats :text="text" :input-history="inputHistory" :time="timer" />
     <p>{{ inputHistory }} {{ timer }}</p>
     <button @click="resetGame">reset</button>
     <TheWords
@@ -69,10 +70,10 @@ function startGame() {
 }
 
 function resetGame() {
+  time.value = timer.value;
   gameInput.value = '';
   currentWordIndex.value = 0;
   isGameStarted.value = false;
-  time.value = timer.value;
   pauseTimer();
   resetTimer();
 }
