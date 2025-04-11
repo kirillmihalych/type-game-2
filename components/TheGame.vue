@@ -1,8 +1,6 @@
 <template>
   <div class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35">
     <TheStats :text="text" :input-history="inputHistory" :time="timer" />
-    <button @click="resetGame">reset</button>
-    <button @click="startTimer">start timer</button>
     <TheWords
       :text="text"
       :input="gameInput"
@@ -10,7 +8,6 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
-    <p>{{ inputHistory }}</p>
     <input
       type="text"
       :value="gameInput"
@@ -21,7 +18,9 @@
 </template>
 
 <script setup lang="ts">
-const text = ref("It's a dangerous business, Frodo!");
+const text = ref(
+  "It's a dangerous business, Frodo! It's a dangerous business, Frodo! It's a dangerous business, Frodo!"
+);
 const gameInput = ref('');
 const currentWordIndex = ref(0);
 const inputHistory = ref<string[]>([]);

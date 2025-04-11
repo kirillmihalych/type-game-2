@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <p class="bg-orange-300">{{ timeNormalized }}</p>
-    <p>wpm: {{ wpm }}</p>
-    <p>rawWpm: {{ rawWpm }}</p>
-    <p>time : {{ time }}</p>
-    <p>acc: {{ accuracy }}</p>
-    <div>
-      <h2>Results</h2>
+  <div class="h-20">
+    <div v-if="props.time" class="flex gap-2">
+      <p>wpm: {{ wpm }}</p>
+      <p>rawWpm: {{ rawWpm }}</p>
+      <p>time : {{ time }}</p>
+      <p>acc: {{ accuracy }}</p>
+    </div>
+    <div v-else class="flex gap-2">
       <p>Wpm: {{ resultWpm }}</p>
       <p>RawWpm: {{ resultRawWpm }}</p>
       <p>Acc: {{ resultAccuracy }}</p>
