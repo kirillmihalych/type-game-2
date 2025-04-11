@@ -53,5 +53,10 @@ export const useCaretStore = defineStore('caret', () => {
     }
   }
 
-  return { caretPos, caretHeight, caretWidth, moveCaret };
+  function placeCaretStart() {
+    caretPos.value.left = 0;
+    caretPos.value.top = 0;
+  }
+
+  return { caretPos, caretHeight, caretWidth, moveCaret, placeCaretStart };
 });

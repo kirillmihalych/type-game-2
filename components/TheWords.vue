@@ -85,7 +85,7 @@ watchEffect(() => {
 });
 
 const isStartPosition = computed(() => {
-  return props.inputHistory.length === 0;
+  return props.inputHistory.length === 0 && !props.input;
 });
 function resetStyles() {
   wordsTopMargin.value = 0;
@@ -93,6 +93,7 @@ function resetStyles() {
 watchEffect(() => {
   if (isStartPosition.value) {
     resetStyles();
+    caretStore.placeCaretStart();
   }
 });
 
