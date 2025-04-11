@@ -1,5 +1,5 @@
 <template>
-  <div class="svg-bg h-full border-[1px] border-t-0 p-4 border-gray-400/35">
+  <div class="h-full p-4">
     <TheStats :text="text" :input-history="inputHistory" :time="timer" />
     <TheWords
       :text="text"
@@ -12,7 +12,7 @@
       type="text"
       :value="gameInput"
       @input="onGameInputChange"
-      class="border-2 border-orange-500 rounded-md outline-none"
+      class="p-2 border-2 rounded-md border-black/25 focus:border-black outline-none transition-colors duration-300"
     />
   </div>
 </template>
