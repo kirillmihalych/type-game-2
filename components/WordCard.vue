@@ -15,7 +15,7 @@
     >
       {{ char }}
     </div>
-    <div v-if="isExtra" class="flex items-center">
+    <div v-if="isExtra" class="flex flex-wrap items-center">
       <div ref="extra" v-for="(extra, index) in extraChars" :key="index">
         {{ extra }}
       </div>
@@ -76,32 +76,39 @@ const { colorCorrectChar, colorErrorChar } = useCharColor(
   currentCharIndex
 );
 
+watch(
+  () => props.input,
+  () => {
+    moveCaretText();
+  }
+);
+
 const isCurrentWord = computed(() => {
   return props.wordIndex === props.currentWordIndex;
 });
 
-watch(
-  () => props.input,
-  () => {
-    if (isCurrentWord.value && !isExtra.value && charBoundings.value) {
-      caretStore.moveCaret(
-        props.input,
-        charBoundings.value[props.currentCharIndex],
-        props.wrapperBounding
-      );
-    }
+function moveCaretText() {
+  if (isCurrentWord.value && !isExtra.value && charBoundings.value) {
+    const charCoords = charBoundings.value[props.currentCharIndex];
+    caretStore.moveCaret(props.input, charCoords, props.wrapperBounding);
   }
-);
+}
 
 onUpdated(() => {
-  if (isExtra.value && extra.value && props.input && isCurrentWord.value) {
-    caretStore.moveCaret(
-      props.input,
-      extra.value[extra.value.length - 1].getBoundingClientRect(),
-      props.wrapperBounding
-    );
-  }
+  moveCaretExtra();
 });
+
+const isCurrentWordHasExtra = computed(() => {
+  return isExtra.value && extra.value && props.input && isCurrentWord.value;
+});
+
+function moveCaretExtra() {
+  if (isCurrentWordHasExtra.value && extra.value) {
+    const extraCoords =
+      extra.value[extra.value.length - 1].getBoundingClientRect();
+    caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
+  }
+}
 
 function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
   const charBoundings = ref<CharBounding[] | undefined>([]);
