@@ -99,7 +99,6 @@ const isTextEnds = computed(() => {
 watch(
   () => isTextEnds.value,
   () => {
-    console.log(isTextEnds.value);
     resetGame();
   }
 );

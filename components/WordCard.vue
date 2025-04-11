@@ -125,6 +125,12 @@ function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
     getCharBoundings();
   });
 
+  watchEffect(() => {
+    if (props.wrapperBounding.top) {
+      getCharBoundings();
+    }
+  });
+
   return { charBoundings };
 }
 
