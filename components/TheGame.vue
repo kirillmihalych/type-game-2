@@ -52,7 +52,7 @@ function handleSpace(): void {
 function setInputValue(eventTarget: HTMLInputElement): void {
   gameInput.value = eventTarget.value;
 }
-// === Game ===
+
 const {
   counter: timer,
   reset: resetTimer,
@@ -99,6 +99,7 @@ const isTextEnds = computed(() => {
 watch(
   () => isTextEnds.value,
   () => {
+    console.log(isTextEnds.value);
     resetGame();
   }
 );

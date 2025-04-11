@@ -5,8 +5,13 @@
     <p>rawWpm: {{ rawWpm }}</p>
     <p>time : {{ time }}</p>
     <p>acc: {{ accuracy }}</p>
-    {{ props.inputHistory.join('').length }}
-    {{ props.inputHistory.join('').split('').length }}
+    <div>
+      <h2>Results</h2>
+      <p>Wpm: {{ resultWpm }}</p>
+      <p>RawWpm: {{ resultRawWpm }}</p>
+      <p>Acc: {{ resultAccuracy }}</p>
+      <p>Time: {{ resultTime }}s</p>
+    </div>
   </div>
 </template>
 
@@ -74,4 +79,25 @@ const accuracy = computed(() => {
   );
   return isNaN(acc) ? 0 : acc;
 });
+
+const resultWpm = ref(0);
+const resultRawWpm = ref(0);
+const resultTime = ref(0);
+const resultAccuracy = ref(0);
+
+function assignResults() {
+  resultWpm.value = wpm.value;
+  resultRawWpm.value = rawWpm.value;
+  resultTime.value = props.time;
+  resultAccuracy.value = accuracy.value;
+}
+
+watch(
+  () => props.time,
+  (newValue, oldValue) => {
+    if (newValue > oldValue) {
+      assignResults();
+    }
+  }
+);
 </script>
