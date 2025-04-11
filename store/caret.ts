@@ -46,7 +46,6 @@ export const useCaretStore = defineStore('caret', () => {
     charBounding: CharBounding,
     parentCoords: Coords
   ) {
-    console.log(parentCoords);
     if (!input) {
       caretPos.value = getStartWordCoords(charBounding, parentCoords);
     } else {

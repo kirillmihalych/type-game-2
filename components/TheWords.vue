@@ -1,25 +1,31 @@
 <template>
   <div
     ref="words-wrapper"
-    class="flex relative flex-wrap leading-snug tracking-wide gap-x-[1ch]"
-    :style="wordWrapperStyle"
+    class="relative overflow-hidden"
+    :style="wrapperStyle"
   >
     <TheCaret />
-    <div v-for="(word, wordIdx) in words" :key="wordIdx">
-      <WordCard
-        :word="word"
-        :word-index="wordIdx"
-        :input="props.input"
-        :input-history="inputHistory"
-        :current-word-index="props.currentWordIndex"
-        :current-char-index="props.currentCharIndex"
-        :wrapper-bounding="wrapperBounding"
-      />
+    <div
+      class="flex flex-wrap leading-snug tracking-wide gap-x-[1ch]"
+      :style="wordsListStyle"
+    >
+      <div v-for="(word, wordIdx) in words" :key="wordIdx">
+        <WordCard
+          :word="word"
+          :word-index="wordIdx"
+          :input="props.input"
+          :input-history="inputHistory"
+          :current-word-index="props.currentWordIndex"
+          :current-char-index="props.currentCharIndex"
+          :wrapper-bounding="wrapperBounding"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useCaretStore } from '~/store/caret';
 import { useSettingsStore } from '~/store/settings';
 
 export interface WrapperBounding {
@@ -35,6 +41,9 @@ const props = defineProps<{
   currentCharIndex: number;
 }>();
 
+const caretStore = useCaretStore();
+const rowHeight = ref(caretStore.caretHeight);
+
 const settings = useSettingsStore();
 const wordsWrapper = useTemplateRef('words-wrapper');
 const { left: wrapperLeft, top: wrapperTop } = useElementBounding(wordsWrapper);
@@ -42,9 +51,49 @@ const wrapperBounding = reactive({
   left: wrapperLeft,
   top: wrapperTop,
 });
-const wordWrapperStyle = reactive({
-  fontSize: settings.fontSize + 'rem',
-  maxWidth: settings.maxLineLength + 'ch',
+
+const ROWS_NUMBER = 3;
+const wrapperStyle = computed(() => {
+  return {
+    height: rowHeight.value * ROWS_NUMBER + 'px',
+  };
+});
+
+const wordsTopMargin = ref(0);
+const wordsListStyle = computed(() => {
+  return {
+    fontSize: settings.fontSize + 'rem',
+    maxWidth: settings.maxLineLength + 'ch',
+    marginTop: wordsTopMargin.value + 'px',
+  };
+});
+
+const isCaretOnThirdRow = computed(() => {
+  return caretStore.caretPos.top === rowHeight.value * 2;
+});
+function scrollRows() {
+  wordsTopMargin.value -= rowHeight.value;
+}
+function adjustCaretPos() {
+  caretStore.caretPos.top -= caretStore.caretHeight;
+}
+watchEffect(() => {
+  if (isCaretOnThirdRow.value) {
+    scrollRows();
+    adjustCaretPos();
+  }
+});
+
+const isStartPosition = computed(() => {
+  return props.inputHistory.length === 0;
+});
+function resetStyles() {
+  wordsTopMargin.value = 0;
+}
+watchEffect(() => {
+  if (isStartPosition.value) {
+    resetStyles();
+  }
 });
 
 const words = computed(() => {
