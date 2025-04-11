@@ -28,6 +28,7 @@ export const useCaretStore = defineStore('caret', () => {
   });
 
   function getStartWordCoords(charCoords: Coords, parentCoords: Coords) {
+    console.log(charCoords, 'get words start');
     return {
       left: charCoords.left - parentCoords.left,
       top: charCoords.top - parentCoords.top,

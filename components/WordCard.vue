@@ -15,7 +15,7 @@
     >
       {{ char }}
     </div>
-    <div v-if="isExtra && isCurrentWord" class="flex items-center">
+    <div v-if="isExtra" class="flex items-center">
       <div ref="extra" v-for="(extra, index) in extraChars" :key="index">
         {{ extra }}
       </div>
@@ -59,7 +59,13 @@ const chars = useTemplateRef('chars');
 const { charBoundings } = useChars(chars);
 
 const extra = useTemplateRef('extra');
-const { isExtra, extraChars } = useExtra(input, word);
+const { isExtra, extraChars } = useExtra(
+  input,
+  word,
+  wordIndex,
+  currentWordIndex,
+  inputHistory
+);
 
 const { colorCorrectChar, colorErrorChar } = useCharColor(
   word,
@@ -86,8 +92,9 @@ watch(
     }
   }
 );
+
 onUpdated(() => {
-  if (extra.value && extra.value.length) {
+  if (isExtra.value && extra.value && props.input && isCurrentWord.value) {
     caretStore.moveCaret(
       props.input,
       extra.value[extra.value.length - 1].getBoundingClientRect(),
@@ -114,15 +121,41 @@ function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
     getCharBoundings();
   });
 
+  onUpdated(() => {
+    getCharBoundings();
+  });
+
   return { charBoundings };
 }
 
-function useExtra(input: Ref<string>, word: Ref<string>) {
+function useExtra(
+  input: Ref<string>,
+  word: Ref<string>,
+  wordIndex: Ref<number>,
+  currentWordIndex: Ref<number>,
+  inputHistory: Ref<string[]>
+) {
+  const isCurrentWord = computed(() => {
+    return wordIndex.value === currentWordIndex.value;
+  });
   const isExtra = computed(() => {
-    return input.value.length > word.value.length;
+    const typedWordLength = inputHistory.value[wordIndex.value]
+      ? inputHistory.value[wordIndex.value].length
+      : 0;
+    return isCurrentWord.value
+      ? input.value.length > word.value.length
+      : typedWordLength > word.value.length;
   });
   const extraChars = computed(() => {
-    return input.value.slice(word.value.length, input.value.length);
+    const typedExtra = inputHistory.value[wordIndex.value]
+      ? inputHistory.value[wordIndex.value].slice(
+          word.value.length,
+          inputHistory.value[wordIndex.value].length
+        )
+      : '';
+    return isCurrentWord.value
+      ? input.value.slice(word.value.length, input.value.length)
+      : typedExtra;
   });
 
   return { isExtra, extraChars };
