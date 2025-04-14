@@ -22,7 +22,7 @@ export const useSettingsStore = defineStore(
   },
   {
     persist: {
-      pick: ['fontSize'],
+      pick: ['fontSize', 'fontFamily', 'maxLineLength'],
     },
   }
 );
