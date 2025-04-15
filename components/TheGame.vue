@@ -15,6 +15,7 @@
       :value="gameInput"
       @input="onGameInputChange"
       @keydown.delete="backspaceToPrevious"
+      maxlength="20"
       class="p-2 border-2 rounded-md border-black/25 focus:border-black outline-none transition-colors duration-300"
     />
   </div>
@@ -41,6 +42,11 @@ const isInputExist = computed(() => {
 function onGameInputChange(e: Event): void {
   const isSpace = (e as InputEvent).data === ' ';
   const isBackToPrevious = gameInput.value === ' ' && !isSpace;
+
+  if (settings.isStopOnError && !isCurrentWordCorrect.value && isSpace) {
+    gameInput.value += '_';
+    return;
+  }
 
   if (isBackToPrevious) {
     // если слово состоит только из пробела,
@@ -69,7 +75,19 @@ function backspaceToPrevious() {
   }
 }
 
+const isCurrentWordCorrect = computed(() => {
+  const words = text.value.split(' ');
+  const currentWord = words[currentWordIndex.value];
+  return currentWord === gameInput.value;
+});
+
 function handleSpace(): void {
+  // if (settings.isStopOnError && isCurrentWordCorrect.value) {
+  //   currentWordIndex.value += 1;
+  // } else {
+  //   return;
+  // }
+
   if (inputHistory.value[currentWordIndex.value]) {
     inputHistory.value[currentWordIndex.value] = gameInput.value;
   } else {

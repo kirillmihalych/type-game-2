@@ -26,6 +26,14 @@ export const useSettingsStore = defineStore(
       isFreedomMode.value = false;
     }
 
+    const isStopOnError = ref(false);
+    function turnOnStopOnError() {
+      isStopOnError.value = true;
+    }
+    function turnOffStopOnError() {
+      isStopOnError.value = false;
+    }
+
     return {
       fontSize,
       setFontSize,
@@ -35,11 +43,20 @@ export const useSettingsStore = defineStore(
       isFreedomMode,
       turnOnFreedomMode,
       turnOffFreedomMode,
+      isStopOnError,
+      turnOnStopOnError,
+      turnOffStopOnError,
     };
   },
   {
     persist: {
-      pick: ['fontSize', 'fontFamily', 'maxLineLength', 'isFreedomMode'],
+      pick: [
+        'fontSize',
+        'fontFamily',
+        'maxLineLength',
+        'isFreedomMode',
+        'isStopOnError',
+      ],
     },
   }
 );

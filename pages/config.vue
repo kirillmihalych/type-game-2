@@ -14,6 +14,7 @@
         <template v-slot:header> Геймплей </template>
         <template v-slot:main>
           <FreedomModeForm />
+          <StopOnErrorForm />
         </template>
       </ConfigItem>
     </div>
