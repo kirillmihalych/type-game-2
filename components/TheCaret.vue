@@ -3,11 +3,13 @@
     class="absolute bg-current rounded-md"
     :class="[
       { ['transition-[left,top]']: settings.isTheCaretSmooth },
-      settings.theCaretPace === 'быстрый'
+      settings.isTheCaretSmooth && settings.theCaretPace === 'быстрый'
         ? 'duration-75'
-        : settings.theCaretPace === 'умеренный'
+        : settings.isTheCaretSmooth && settings.theCaretPace === 'умеренный'
         ? 'duration-100'
-        : 'duration-150',
+        : settings.isTheCaretSmooth && settings.theCaretPace === 'медленный'
+        ? 'duration-150'
+        : '',
     ]"
     :style="caretStyle"
   ></div>
