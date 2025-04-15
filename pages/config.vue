@@ -13,6 +13,7 @@
       <ConfigItem>
         <template v-slot:header> Геймплей </template>
         <template v-slot:main>
+          <GameDifficultyForm />
           <FreedomModeForm />
           <StopOnErrorForm />
         </template>

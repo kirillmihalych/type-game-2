@@ -1,4 +1,5 @@
 export type FontFamily = 'PT Mono' | 'PT Sans' | 'PT Serif';
+export type GameDifficulty = 'стандартный' | 'сложный' | 'эксперт';
 
 export const useSettingsStore = defineStore(
   'settings',
@@ -34,6 +35,16 @@ export const useSettingsStore = defineStore(
       isStopOnError.value = false;
     }
 
+    const gameDifficulties = ref<GameDifficulty[]>([
+      'стандартный',
+      'сложный',
+      'эксперт',
+    ]);
+    const selectedGameDifficulty = ref<GameDifficulty>('стандартный');
+    function setGameDifficulty(difficulty: GameDifficulty) {
+      selectedGameDifficulty.value = difficulty;
+    }
+
     return {
       fontSize,
       setFontSize,
@@ -46,6 +57,9 @@ export const useSettingsStore = defineStore(
       isStopOnError,
       turnOnStopOnError,
       turnOffStopOnError,
+      gameDifficulties,
+      selectedGameDifficulty,
+      setGameDifficulty,
     };
   },
   {
@@ -56,6 +70,7 @@ export const useSettingsStore = defineStore(
         'maxLineLength',
         'isFreedomMode',
         'isStopOnError',
+        'selectedGameDifficulty',
       ],
     },
   }

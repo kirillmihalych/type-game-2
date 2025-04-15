@@ -8,8 +8,6 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
-    <p>{{ inputHistory }} {{ currentWordIndex }}</p>
-    <p>{{ gameInput }}</p>
     <input
       type="text"
       :value="gameInput"
@@ -39,6 +37,13 @@ const isInputExist = computed(() => {
   return gameInput.value.length > 0;
 });
 
+const isCharCorrect = computed(() => {
+  const inputedChar = gameInput.value[currentCharIndex.value];
+  const currentChar =
+    text.value.split(' ')[currentWordIndex.value][currentCharIndex.value];
+  return inputedChar === currentChar;
+});
+
 function onGameInputChange(e: Event): void {
   const isSpace = (e as InputEvent).data === ' ';
   const isBackToPrevious = gameInput.value === ' ' && !isSpace;
@@ -64,6 +69,15 @@ function onGameInputChange(e: Event): void {
   } else {
     gameInput.value = (e.target as HTMLInputElement).value;
   }
+
+  if (
+    !isCharCorrect.value &&
+    settings.selectedGameDifficulty === 'эксперт' &&
+    isInputExist.value
+  ) {
+    resetGame();
+    return;
+  }
 }
 
 function backspaceToPrevious() {
@@ -82,11 +96,13 @@ const isCurrentWordCorrect = computed(() => {
 });
 
 function handleSpace(): void {
-  // if (settings.isStopOnError && isCurrentWordCorrect.value) {
-  //   currentWordIndex.value += 1;
-  // } else {
-  //   return;
-  // }
+  if (
+    !isCurrentWordCorrect.value &&
+    settings.selectedGameDifficulty === 'сложный'
+  ) {
+    resetGame();
+    return;
+  }
 
   if (inputHistory.value[currentWordIndex.value]) {
     inputHistory.value[currentWordIndex.value] = gameInput.value;
