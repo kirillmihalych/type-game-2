@@ -18,6 +18,12 @@
           <StopOnErrorForm />
         </template>
       </ConfigItem>
+      <ConfigItem>
+        <template v-slot:header> Курсор </template>
+        <template v-slot:main>
+          <TheCaretForm />
+        </template>
+      </ConfigItem>
     </div>
   </div>
 </template>
