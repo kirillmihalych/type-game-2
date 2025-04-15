@@ -21,6 +21,9 @@
 </template>
 
 <script setup lang="ts">
+import { useSettingsStore } from '~/store/settings';
+
+const settings = useSettingsStore();
 const text = ref(
   "It's a dangerous business, Frodo! It's a dangerous business, Frodo! It's a dangerous business, Frodo!"
 );
@@ -49,6 +52,7 @@ function onGameInputChange(e: Event): void {
     }
     return;
   }
+
   if (isSpace && isInputExist.value) {
     handleSpace();
   } else {
@@ -57,9 +61,11 @@ function onGameInputChange(e: Event): void {
 }
 
 function backspaceToPrevious() {
-  if (currentWordIndex.value > 0 && !gameInput.value) {
-    gameInput.value = ' ';
-    currentWordIndex.value -= 1;
+  if (settings.isFreedomMode) {
+    if (currentWordIndex.value > 0 && !gameInput.value) {
+      gameInput.value = ' ';
+      currentWordIndex.value -= 1;
+    }
   }
 }
 

@@ -10,6 +10,12 @@
           <MaxLineWidthForm />
         </template>
       </ConfigItem>
+      <ConfigItem>
+        <template v-slot:header> Геймплей </template>
+        <template v-slot:main>
+          <FreedomModeForm />
+        </template>
+      </ConfigItem>
     </div>
   </div>
 </template>

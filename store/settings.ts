@@ -18,11 +18,28 @@ export const useSettingsStore = defineStore(
       }
     }
 
-    return { fontSize, setFontSize, fontFamily, fontFamilyList, maxLineLength };
+    const isFreedomMode = ref(false);
+    function turnOnFreedomMode() {
+      isFreedomMode.value = true;
+    }
+    function turnOffFreedomMode() {
+      isFreedomMode.value = false;
+    }
+
+    return {
+      fontSize,
+      setFontSize,
+      fontFamily,
+      fontFamilyList,
+      maxLineLength,
+      isFreedomMode,
+      turnOnFreedomMode,
+      turnOffFreedomMode,
+    };
   },
   {
     persist: {
-      pick: ['fontSize', 'fontFamily', 'maxLineLength'],
+      pick: ['fontSize', 'fontFamily', 'maxLineLength', 'isFreedomMode'],
     },
   }
 );
