@@ -8,10 +8,13 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
+    <p>{{ inputHistory }} {{ currentWordIndex }}</p>
+    <p>{{ gameInput }}</p>
     <input
       type="text"
       :value="gameInput"
       @input="onGameInputChange"
+      @keydown.delete="backspaceToPrevious"
       class="p-2 border-2 rounded-md border-black/25 focus:border-black outline-none transition-colors duration-300"
     />
   </div>
@@ -34,22 +37,40 @@ const isInputExist = computed(() => {
 
 function onGameInputChange(e: Event): void {
   const isSpace = (e as InputEvent).data === ' ';
+  const isBackToPrevious = gameInput.value === ' ' && !isSpace;
 
+  if (isBackToPrevious) {
+    // если слово состоит только из пробела,
+    // его надо заменить на "_", чтобы избежать багов с реальным space
+    if (inputHistory.value[currentWordIndex.value] === ' ') {
+      gameInput.value = '_';
+    } else {
+      gameInput.value = inputHistory.value[currentWordIndex.value];
+    }
+    return;
+  }
   if (isSpace && isInputExist.value) {
     handleSpace();
   } else {
-    setInputValue(e.target as HTMLInputElement);
+    gameInput.value = (e.target as HTMLInputElement).value;
+  }
+}
+
+function backspaceToPrevious() {
+  if (currentWordIndex.value > 0 && !gameInput.value) {
+    gameInput.value = ' ';
+    currentWordIndex.value -= 1;
   }
 }
 
 function handleSpace(): void {
+  if (inputHistory.value[currentWordIndex.value]) {
+    inputHistory.value[currentWordIndex.value] = gameInput.value;
+  } else {
+    inputHistory.value.push(gameInput.value);
+  }
   currentWordIndex.value += 1;
-  inputHistory.value.push(gameInput.value);
   gameInput.value = '';
-}
-
-function setInputValue(eventTarget: HTMLInputElement): void {
-  gameInput.value = eventTarget.value;
 }
 
 const {
