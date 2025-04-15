@@ -21,11 +21,10 @@
 
 <script setup lang="ts">
 import { useSettingsStore } from '~/store/settings';
+import { quotes } from '~/assets/quotes';
 
 const settings = useSettingsStore();
-const text = ref(
-  "It's a dangerous business, Frodo! It's a dangerous business, Frodo! It's a dangerous business, Frodo!"
-);
+const text = ref("It's a dangerous business, Frodo!");
 const gameInput = ref('');
 const currentWordIndex = ref(0);
 const inputHistory = ref<string[]>([]);
@@ -38,9 +37,13 @@ const isInputExist = computed(() => {
 });
 
 const isCharCorrect = computed(() => {
-  const inputedChar = gameInput.value[currentCharIndex.value];
+  const inputedChar = gameInput.value
+    ? gameInput.value[currentCharIndex.value]
+    : null;
   const currentChar =
-    text.value.split(' ')[currentWordIndex.value][currentCharIndex.value];
+    currentWordIndex.value < text.value.split(' ').length
+      ? text.value.split(' ')[currentWordIndex.value][currentCharIndex.value]
+      : null;
   return inputedChar === currentChar;
 });
 
@@ -130,7 +133,12 @@ function startGame() {
   isGameStarted.value = true;
 }
 
+function getQuote() {
+  return quotes[Math.floor(Math.random() * (quotes.length - 1))];
+}
+
 function resetGame() {
+  text.value = getQuote();
   time.value = timer.value;
   gameInput.value = '';
   currentWordIndex.value = 0;
@@ -166,5 +174,6 @@ watch(
 onMounted(() => {
   pauseTimer();
   resetTimer();
+  resetGame();
 });
 </script>
