@@ -1,10 +1,22 @@
 <template>
   <div class="h-20">
     <div v-if="props.time" class="flex gap-2">
-      <p>wpm: {{ wpm }}</p>
+      <!-- <p>wpm: {{ wpm }}</p>
       <p>rawWpm: {{ rawWpm }}</p>
       <p>time : {{ time }}</p>
-      <p>acc: {{ accuracy }}</p>
+      <p>acc: {{ accuracy }}</p> -->
+      <div>
+        <p>{{ props.inputHistory }}</p>
+        <p>
+          Total chars{{
+            words.slice(0, currentWordIndex).join('').length + extraChars
+          }}
+        </p>
+        <p>Mistakes {{ mistakes }}</p>
+      </div>
+      <p>
+        {{ props.inputHistory.join(' ').length }} {{ mistakes }} {{ accuracy }}
+      </p>
     </div>
     <div v-else class="flex gap-2">
       <p>Wpm: {{ resultWpm }}</p>
@@ -20,6 +32,7 @@ const props = defineProps<{
   text: string;
   inputHistory: string[];
   time: number;
+  currentWordIndex: number;
 }>();
 
 const correctWordsHistory = computed(() => {
@@ -28,14 +41,23 @@ const correctWordsHistory = computed(() => {
   );
 });
 
+const words = computed(() => {
+  return props.text.split(' ');
+});
 const mistakes = computed(() => {
   let mistakes = 0;
-  const flatHistory = props.inputHistory.join(' ');
-  for (let i = 0; i < flatHistory.length; i++) {
-    if (flatHistory[i] !== props.text[i]) {
-      mistakes += 1;
+  for (let i = 0; i < props.inputHistory.length; i++) {
+    if (props.inputHistory[i].length < words.value[i].length) {
+      mistakes += words.value[i].length - props.inputHistory[i].length;
+    }
+
+    for (let j = 0; j < props.inputHistory[i].length; j++) {
+      if (props.inputHistory[i][j] !== words.value[i][j]) {
+        mistakes += 1;
+      }
     }
   }
+
   return mistakes;
 });
 
@@ -70,11 +92,22 @@ const wpm = computed(() => {
   return isNaN(wpm) ? 0 : Math.round(wpm);
 });
 
+const extraChars = computed(() => {
+  let extra = 0;
+  for (let i = 0; i < props.inputHistory.length; i++) {
+    if (props.inputHistory[i].length > words.value[i].length) {
+      extra += props.inputHistory[i].length - words.value[i].length;
+    }
+  }
+  return extra;
+});
+
 const accuracy = computed(() => {
   const acc = Math.round(
     100 -
       (mistakes.value /
-        (mistakes.value + props.inputHistory.join(' ').length)) *
+        (words.value.slice(0, props.currentWordIndex).join('').length +
+          extraChars.value)) *
         100
   );
   return isNaN(acc) ? 0 : acc;

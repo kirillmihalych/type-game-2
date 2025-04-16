@@ -4,9 +4,16 @@
     class="relative overflow-hidden"
     :style="wrapperStyle"
   >
-    <TheCaret />
+    <div
+      v-show="!props.isInputFocused"
+      class="absolute size-full flex items-center justify-center z-10 text-black"
+    >
+      <p>Out of focus</p>
+    </div>
+    <TheCaret :is-input-focused="props.isInputFocused" />
     <div
       class="flex flex-wrap leading-snug tracking-wide gap-x-[1ch]"
+      :class="!props.isInputFocused ? 'blur-sm' : 'blur-none'"
       :style="wordsListStyle"
     >
       <div v-for="(word, wordIdx) in words" :key="wordIdx">
@@ -39,6 +46,7 @@ const props = defineProps<{
   inputHistory: string[];
   currentWordIndex: number;
   currentCharIndex: number;
+  isInputFocused: boolean;
 }>();
 
 const caretStore = useCaretStore();
@@ -56,14 +64,16 @@ const ROWS_NUMBER = 3;
 const wrapperStyle = computed(() => {
   return {
     height: rowHeight.value * ROWS_NUMBER + 'px',
+    fontSize: settings.fontSize + 'rem',
+    maxWidth: settings.maxLineLength + 'ch',
   };
 });
 
 const wordsTopMargin = ref(0);
 const wordsListStyle = computed(() => {
   return {
-    fontSize: settings.fontSize + 'rem',
-    maxWidth: settings.maxLineLength + 'ch',
+    // fontSize: settings.fontSize + 'rem',
+    // maxWidth: settings.maxLineLength + 'ch',
     marginTop: wordsTopMargin.value + 'px',
   };
 });

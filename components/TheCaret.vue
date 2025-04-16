@@ -1,5 +1,6 @@
 <template>
   <div
+    v-show="props.isInputFocused"
     class="absolute bg-current rounded-md"
     :class="[
       { ['transition-[left,top]']: settings.isTheCaretSmooth },
@@ -19,6 +20,9 @@
 import { useCaretStore } from '~/store/caret';
 import { useSettingsStore } from '~/store/settings';
 
+const props = defineProps<{
+  isInputFocused: boolean;
+}>();
 const caretStore = useCaretStore();
 const settings = useSettingsStore();
 

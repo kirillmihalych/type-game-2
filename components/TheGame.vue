@@ -1,14 +1,22 @@
 <template>
-  <div class="h-full p-4">
-    <TheStats :text="text" :input-history="inputHistory" :time="timer" />
+  <div class="grid justify-center items-start h-full p-4">
+    <TheStats
+      :text="text"
+      :input-history="inputHistory"
+      :time="timer"
+      :current-word-index="currentWordIndex"
+    />
     <TheWords
+      @click="setFocusToInput"
       :text="text"
       :input="gameInput"
+      :is-input-focused="focused"
       :input-history="inputHistory"
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
     <input
+      ref="input"
       type="text"
       :value="gameInput"
       @input="onGameInputChange"
@@ -21,7 +29,20 @@
 
 <script setup lang="ts">
 import { useSettingsStore } from '~/store/settings';
+import { useFocus, onStartTyping } from '@vueuse/core';
 import { quotes } from '~/assets/quotes';
+
+const input = useTemplateRef<HTMLInputElement>('input');
+const { focused } = useFocus(input);
+function setFocusToInput() {
+  focused.value = true;
+}
+// onStartTyping(() => {
+//   if (input.value !== document.activeElement) {
+//     setFocusToInput();
+//     gameInput.value = 'initial';
+//   }
+// });
 
 const settings = useSettingsStore();
 const text = ref("It's a dangerous business, Frodo!");
@@ -138,7 +159,7 @@ function getQuote() {
 }
 
 function resetGame() {
-  text.value = getQuote();
+  // text.value = getQuote();
   time.value = timer.value;
   gameInput.value = '';
   currentWordIndex.value = 0;
