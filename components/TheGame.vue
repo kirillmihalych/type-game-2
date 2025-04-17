@@ -22,7 +22,7 @@
       @input="onGameInputChange"
       @keydown.delete="backspaceToPrevious"
       maxlength="20"
-      class="p-2 border-2 rounded-md border-black/25 focus:border-black outline-none transition-colors duration-300"
+      class="absolute bottom-0 right-0 opacity-0 size[1px]"
     />
   </div>
 </template>
