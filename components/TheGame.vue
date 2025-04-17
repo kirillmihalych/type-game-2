@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 import { useSettingsStore } from '~/store/settings';
-import { useFocus, onStartTyping } from '@vueuse/core';
+import { useFocus } from '@vueuse/core';
 import { quotes } from '~/assets/quotes';
 
 const input = useTemplateRef<HTMLInputElement>('input');
@@ -37,12 +37,6 @@ const { focused } = useFocus(input);
 function setFocusToInput() {
   focused.value = true;
 }
-// onStartTyping(() => {
-//   if (input.value !== document.activeElement) {
-//     setFocusToInput();
-//     gameInput.value = 'initial';
-//   }
-// });
 
 const settings = useSettingsStore();
 const text = ref("It's a dangerous business, Frodo!");
@@ -150,23 +144,21 @@ const {
 const time = ref(0);
 const isGameStarted = ref(false);
 
-function startGame() {
-  isGameStarted.value = true;
-}
-
 function getQuote() {
   return quotes[Math.floor(Math.random() * (quotes.length - 1))];
 }
 
+function startGame() {
+  isGameStarted.value = true;
+}
+
 function resetGame() {
   // text.value = getQuote();
-  time.value = timer.value;
+  console.log(timer.value, inputHistory.value);
   gameInput.value = '';
   currentWordIndex.value = 0;
   isGameStarted.value = false;
-  inputHistory.value = [];
   pauseTimer();
-  resetTimer();
 }
 
 watch(isInputExist, (newValue) => {
@@ -177,18 +169,22 @@ watch(isInputExist, (newValue) => {
 
 watch(isGameStarted, (newValue) => {
   if (newValue) {
+    inputHistory.value = [];
+    resetTimer();
     startTimer();
   }
 });
 
 const isTextEnds = computed(() => {
-  return currentWordIndex.value > text.value.split(' ').length - 1;
+  return currentWordIndex.value === text.value.split(' ').length;
 });
 
 watch(
   () => isTextEnds.value,
-  () => {
-    resetGame();
+  (newValue) => {
+    if (newValue) {
+      resetGame();
+    }
   }
 );
 

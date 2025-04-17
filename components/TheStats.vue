@@ -1,28 +1,19 @@
 <template>
   <div class="h-20">
+    <!-- v-if="props.time" -->
     <div v-if="props.time" class="flex gap-2">
-      <!-- <p>wpm: {{ wpm }}</p>
+      <p>wpm: {{ wpm }}</p>
       <p>rawWpm: {{ rawWpm }}</p>
       <p>time : {{ time }}</p>
-      <p>acc: {{ accuracy }}</p> -->
-      <div>
-        <p>{{ props.inputHistory }}</p>
-        <p>
-          Total chars{{
-            words.slice(0, currentWordIndex).join('').length + extraChars
-          }}
-        </p>
-        <p>Mistakes {{ mistakes }}</p>
-      </div>
-      <p>
-        {{ props.inputHistory.join(' ').length }} {{ mistakes }} {{ accuracy }}
-      </p>
+      <p>acc: {{ accuracy }}</p>
+      <p>mistakes: {{ mistakes }}</p>
     </div>
     <div v-else class="flex gap-2">
       <p>Wpm: {{ resultWpm }}</p>
       <p>RawWpm: {{ resultRawWpm }}</p>
       <p>Acc: {{ resultAccuracy }}</p>
       <p>Time: {{ resultTime }}s</p>
+      <p>mistakes: {{ mistakes }}</p>
     </div>
   </div>
 </template>
@@ -106,14 +97,20 @@ const accuracy = computed(() => {
   const acc = Math.round(
     100 -
       (mistakes.value /
-        (words.value.slice(0, props.currentWordIndex).join('').length +
+        (words.value.slice(0, props.inputHistory.length).join('').length +
           extraChars.value)) *
         100
   );
   return isNaN(acc) ? 0 : acc;
 });
 
+
+// === results ===
 const resultWpm = ref(0);
+function getResultWpm(){
+
+}
+
 const resultRawWpm = ref(0);
 const resultTime = ref(0);
 const resultAccuracy = ref(0);
@@ -125,12 +122,28 @@ function assignResults() {
   resultAccuracy.value = accuracy.value;
 }
 
+// watch(
+//   () => isTextEnds.value,
+//   (newValue) => {
+//     console.log('1');
+//     if (newValue) {
+//       assignResults();
+//     }
+//   }
+// );
+
+// поставить константное время
+// watch(
+//   () => props.inputHistory.length,
+//   (newValue) => {
+//     console.log(newValue);
+//   }
+// );
+
 watch(
-  () => props.time,
-  (newValue, oldValue) => {
-    if (newValue > oldValue) {
-      assignResults();
-    }
+  () => wpm.value,
+  (newValue) => {
+    console.log(props.inputHistory);
   }
 );
 </script>
