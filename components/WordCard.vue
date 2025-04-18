@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-wrap">
     <div
-      ref="chars"
+      :ref="(el) => getCharFromDOM(el, charIdx)"
       v-for="(char, charIdx) in props.word"
       :key="charIdx"
       class="flex items-center gap-[2px] justify-center"
@@ -55,7 +55,19 @@ export interface CharBounding {
 
 const caretStore = useCaretStore();
 
-const chars = useTemplateRef('chars');
+const chars = ref<any[]>([]);
+
+function getCharFromDOM(
+  el: Element | globalThis.ComponentPublicInstance | null,
+  charIdx: number
+) {
+  if (el) {
+    chars.value[charIdx] = el;
+  } else {
+    chars.value = chars.value.filter((char, idx) => idx === charIdx);
+  }
+}
+
 const { charBoundings } = useChars(chars);
 
 const extra = useTemplateRef('extra');

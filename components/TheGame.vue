@@ -1,8 +1,11 @@
 <template>
-  <div class="grid justify-center items-start h-full p-4">
+  <div class="h-full p-4">
     <TheStats
       :text="text"
-      :input-history="inputHistory"
+      :input="gameInput"
+      :curr-history="currHistory"
+      :is-game-started="isGameStarted"
+      @on-results-saved="resetGame"
       :time="timer"
       :current-word-index="currentWordIndex"
     />
@@ -11,7 +14,7 @@
       :text="text"
       :input="gameInput"
       :is-input-focused="focused"
-      :input-history="inputHistory"
+      :input-history="currHistory"
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
@@ -39,14 +42,17 @@ function setFocusToInput() {
 }
 
 const settings = useSettingsStore();
-const text = ref("It's a dangerous business, Frodo!");
+const text = ref(
+  "Don't measure yourself by what you have accomplished, but by what you should have accomplished with your ability."
+);
 const gameInput = ref('');
 const currentWordIndex = ref(0);
-const inputHistory = ref<string[]>([]);
+const currHistory = ref<string[]>([]);
 
 const currentCharIndex = computed(() => {
   return gameInput.value.length ? gameInput.value.length - 1 : 0;
 });
+
 const isInputExist = computed(() => {
   return gameInput.value.length > 0;
 });
@@ -74,10 +80,12 @@ function onGameInputChange(e: Event): void {
   if (isBackToPrevious) {
     // если слово состоит только из пробела,
     // его надо заменить на "_", чтобы избежать багов с реальным space
-    if (inputHistory.value[currentWordIndex.value] === ' ') {
+    if (currHistory.value[currentWordIndex.value] === ' ') {
       gameInput.value = '_';
+    } else if (!currHistory.value[currentWordIndex.value]) {
+      gameInput.value = '';
     } else {
-      gameInput.value = inputHistory.value[currentWordIndex.value];
+      gameInput.value = currHistory.value[currentWordIndex.value];
     }
     return;
   }
@@ -122,11 +130,12 @@ function handleSpace(): void {
     return;
   }
 
-  if (inputHistory.value[currentWordIndex.value]) {
-    inputHistory.value[currentWordIndex.value] = gameInput.value;
+  if (currHistory.value[currentWordIndex.value]) {
+    currHistory.value[currentWordIndex.value] = gameInput.value;
   } else {
-    inputHistory.value.push(gameInput.value);
+    currHistory.value.push(gameInput.value);
   }
+
   currentWordIndex.value += 1;
   gameInput.value = '';
 }
@@ -141,11 +150,11 @@ const {
   immediate: true,
 });
 
-const time = ref(0);
 const isGameStarted = ref(false);
 
 function getQuote() {
-  return quotes[Math.floor(Math.random() * (quotes.length - 1))];
+  const index = Math.floor(Math.random() * quotes.length);
+  return quotes[index];
 }
 
 function startGame() {
@@ -153,12 +162,12 @@ function startGame() {
 }
 
 function resetGame() {
-  // text.value = getQuote();
-  console.log(timer.value, inputHistory.value);
   gameInput.value = '';
   currentWordIndex.value = 0;
   isGameStarted.value = false;
   pauseTimer();
+  text.value = getQuote();
+  currHistory.value = [];
 }
 
 watch(isInputExist, (newValue) => {
@@ -169,24 +178,10 @@ watch(isInputExist, (newValue) => {
 
 watch(isGameStarted, (newValue) => {
   if (newValue) {
-    inputHistory.value = [];
     resetTimer();
     startTimer();
   }
 });
-
-const isTextEnds = computed(() => {
-  return currentWordIndex.value === text.value.split(' ').length;
-});
-
-watch(
-  () => isTextEnds.value,
-  (newValue) => {
-    if (newValue) {
-      resetGame();
-    }
-  }
-);
 
 onMounted(() => {
   pauseTimer();

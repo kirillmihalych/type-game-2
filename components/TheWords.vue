@@ -72,8 +72,6 @@ const wrapperStyle = computed(() => {
 const wordsTopMargin = ref(0);
 const wordsListStyle = computed(() => {
   return {
-    // fontSize: settings.fontSize + 'rem',
-    // maxWidth: settings.maxLineLength + 'ch',
     marginTop: wordsTopMargin.value + 'px',
   };
 });
@@ -95,7 +93,7 @@ watchEffect(() => {
 });
 
 const isStartPosition = computed(() => {
-  return props.inputHistory.length === 0 && !props.input;
+  return props.currentWordIndex === 0 && !props.input;
 });
 function resetStyles() {
   wordsTopMargin.value = 0;
