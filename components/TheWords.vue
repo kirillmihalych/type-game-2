@@ -4,12 +4,7 @@
     class="relative overflow-hidden"
     :style="wrapperStyle"
   >
-    <div
-      v-show="!props.isInputFocused"
-      class="absolute size-full flex items-center justify-center z-10"
-    >
-      <p>Out of focus</p>
-    </div>
+    <FocusWarning :is-input-focused="props.isInputFocused" />
     <TheCaret :is-input-focused="props.isInputFocused" />
     <div
       class="flex flex-wrap leading-snug tracking-wide gap-x-[1ch]"
