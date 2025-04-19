@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@nuxt/icon": "1.11.0",
+    "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/tailwindcss": "6.13.2",
     "@pinia/nuxt": "0.10.1",
     "@vueuse/core": "^13.0.0",
