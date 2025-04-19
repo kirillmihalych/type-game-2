@@ -1,16 +1,32 @@
 <template>
-  <div class="h-20">
+  <div class="uppercase font-bold opacity-50">
     <div v-if="isGameStarted" class="flex gap-2">
-      <p>wpm: {{ wpm }}</p>
-      <p>rawWpm: {{ rawWpm }}</p>
-      <p>time : {{ time }}</p>
-      <p>acc: {{ accuracy }}</p>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:gauge" />
+        <p>wpm {{ wpm }}</p>
+      </div>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:timer" />
+        <p>time {{ time }}</p>
+      </div>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:target" />
+        <p>acc {{ accuracy }}</p>
+      </div>
     </div>
     <div v-else class="flex gap-2">
-      <p>Wpm: {{ resultWpm }}</p>
-      <p>RawWpm: {{ resultRawWpm }}</p>
-      <p>Acc: {{ resultAccuracy }}</p>
-      <p>Time: {{ resultTime }}s</p>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:gauge" />
+        <p>wpm {{ resultWpm }}</p>
+      </div>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:timer" />
+        <p>time {{ resultTime }}</p>
+      </div>
+      <div class="flex items-center gap-1">
+        <Icon name="lucide:target" />
+        <p>acc {{ resultAccuracy }}</p>
+      </div>
     </div>
   </div>
 </template>
