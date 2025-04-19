@@ -10,7 +10,7 @@
           ? 'text-green-500'
           : colorErrorChar(char, charIdx)
           ? 'text-red-500'
-          : 'text-gray-950/50'
+          : ' text-gray-950/50 dark:text-white/50'
       "
     >
       {{ char }}

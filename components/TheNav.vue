@@ -1,7 +1,5 @@
 <template>
-  <nav
-    class="flex justify-between items-center pl-2 pr-2 pt-4 pb-4 shadow-md border-b-[1px] border-gray-400/15 z-10"
-  >
+  <nav class="flex justify-between items-center pl-2 pr-2 pt-4 pb-4">
     <ul class="flex gap-2">
       <li>
         <NuxtLink to="/" class="flex items-center gap-1">
@@ -17,8 +15,11 @@
       </li>
     </ul>
     <div class="flex items-center gap-2">
-      <button class="flex items-center">
-        <Icon name="heroicons:moon" size="1.5rem" />
+      <button class="flex items-center" @click="setDarkMode">
+        <ClientOnly fallback-tag="span">
+          <Icon v-if="isLightMode" name="lucide:moon" size="1.5rem" />
+          <Icon v-if="isDarkMode" name="lucide:sun-medium" size="1.5rem" />
+        </ClientOnly>
       </button>
       <NuxtLink
         to="https://github.com/kirillmihalych"
@@ -31,5 +32,16 @@
 </template>
 
 <script setup lang="ts">
-// [x] Лучше захардкодить.
+const colorMode = useColorMode();
+
+const isDarkMode = computed(() => {
+  return colorMode.preference === 'dark';
+});
+const isLightMode = computed(() => {
+  return colorMode.preference === 'light';
+});
+
+function setDarkMode() {
+  colorMode.preference = colorMode.value === 'light' ? 'dark' : 'light';
+}
 </script>

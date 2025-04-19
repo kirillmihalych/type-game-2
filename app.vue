@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-rows-[auto_1fr] h-dvh font-mono"
+    class="dark:bg-neutral-900 dark:text-white"
     :class="[
       settings.fontFamily === 'PT Mono'
         ? 'font-mono'

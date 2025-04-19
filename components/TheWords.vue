@@ -6,7 +6,7 @@
   >
     <div
       v-show="!props.isInputFocused"
-      class="absolute size-full flex items-center justify-center z-10 text-black"
+      class="absolute size-full flex items-center justify-center z-10"
     >
       <p>Out of focus</p>
     </div>

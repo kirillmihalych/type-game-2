@@ -8,7 +8,7 @@
             <slot name="heading" />
           </h3>
         </div>
-        <p class="text-gray-950/50">
+        <p class="text-gray-950/50 dark:text-white/50">
           <slot name="description" />
         </p>
       </div>

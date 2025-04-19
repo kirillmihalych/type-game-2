@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full p-4">
+  <div class="h-dvh p-4">
     <TheStats
       :text="text"
       :input="gameInput"

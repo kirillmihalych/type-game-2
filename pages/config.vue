@@ -1,7 +1,7 @@
 <template>
-  <div class="p-4">
+  <div class="p-4 min-h-dvh h-full">
     <div>
-      <h1 class="text-2xl text-gray-950 mb-6">Настройки</h1>
+      <h1 class="text-2xl mb-6">Настройки</h1>
       <ConfigItem>
         <template v-slot:header> Типография </template>
         <template v-slot:main>
