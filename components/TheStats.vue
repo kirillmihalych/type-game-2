@@ -1,5 +1,5 @@
 <template>
-  <div class="uppercase font-bold opacity-50">
+  <div class="uppercase font-bold">
     <div v-if="isGameStarted" class="flex gap-2">
       <div class="flex items-center gap-1">
         <Icon name="lucide:gauge" />
@@ -14,7 +14,7 @@
         <p>acc {{ accuracy }}</p>
       </div>
     </div>
-    <div v-else class="flex gap-2">
+    <div v-else class="flex gap-4">
       <div class="flex items-center gap-1">
         <Icon name="lucide:gauge" />
         <p>wpm {{ resultWpm }}</p>
