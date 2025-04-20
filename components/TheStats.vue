@@ -11,6 +11,7 @@
       </div>
       <div class="flex items-center gap-1">
         <Icon name="lucide:target" />
+        {{ allChars }}
         <p>acc {{ accuracy }}</p>
       </div>
     </div>
@@ -87,6 +88,7 @@ const wpm = computed(() => {
 });
 
 const mistakes = ref(0);
+const allChars = ref(0);
 watch(
   () => props.input,
   (newInputVal, oldInputVal) => {
@@ -94,11 +96,21 @@ watch(
       return;
     }
 
+    if (props.currHistory[props.currentWordIndex] && newInputVal === ' ')
+      return;
+
     const diff = newInputVal.slice(oldInputVal.length, newInputVal.length);
     const wordSnap = words.value[props.currentWordIndex].slice(
       oldInputVal.length,
       newInputVal.length
     );
+
+    if (newInputVal.length > oldInputVal.length) {
+      if (props.currHistory[props.currentWordIndex] === newInputVal) {
+        return;
+      }
+      allChars.value += diff.length;
+    }
 
     for (let i = 0; i < diff.length; i++) {
       if (diff[i] !== wordSnap[i]) {
@@ -118,11 +130,10 @@ watch(
 );
 
 const accuracy = computed(() => {
-  const totalChars = props.currHistory.join('').length;
-  const spaces = props.currHistory.length;
-  const acc = Math.round(
-    100 - (mistakes.value / (totalChars + spaces + props.input.length)) * 100
-  );
+  // const totalChars = props.currHistory.join('').length;
+  // const spaces = props.currHistory.length;
+  //  + spaces + props.input.length
+  const acc = Math.round(100 - (mistakes.value / allChars.value) * 100);
   return isNaN(acc) || !isFinite(acc) ? 0 : acc;
 });
 
@@ -149,6 +160,7 @@ watch(
       assignResults();
       emit('onResultsSaved', true);
       mistakes.value = 0;
+      allChars.value = 0;
     }
   }
 );
