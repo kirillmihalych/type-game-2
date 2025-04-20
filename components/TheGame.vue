@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4">
+  <div class="grid gap-4 mt-[75px]">
     <TheStats
       :text="text"
       :input="gameInput"

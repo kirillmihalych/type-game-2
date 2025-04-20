@@ -1,5 +1,5 @@
 <template>
-  <nav class="flex justify-between items-center pl-2 pr-2 pt-4 pb-4">
+  <nav class="flex justify-between items-center py-4 lg:py-6">
     <ul class="flex gap-2">
       <li>
         <NuxtLink to="/" class="flex items-center gap-1">
