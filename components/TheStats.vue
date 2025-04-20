@@ -11,7 +11,6 @@
       </div>
       <div class="flex items-center gap-1">
         <Icon name="lucide:target" />
-        {{ allChars }}
         <p>acc {{ accuracy }}</p>
       </div>
     </div>
@@ -130,9 +129,6 @@ watch(
 );
 
 const accuracy = computed(() => {
-  // const totalChars = props.currHistory.join('').length;
-  // const spaces = props.currHistory.length;
-  //  + spaces + props.input.length
   const acc = Math.round(100 - (mistakes.value / allChars.value) * 100);
   return isNaN(acc) || !isFinite(acc) ? 0 : acc;
 });
