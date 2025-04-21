@@ -6,14 +6,14 @@
       :type="props.type"
       :value="inputValue"
       @input="inputHandler(($event.target as HTMLInputElement).value)"
-      class="w-full p-2 shadow-sm border-2 border-gray-950/50 outline-none focus:border-gray-950 hover:border-gray-950 rounded-md transition-colors duration-300"
+      class="w-full py-2 px-4 rounded-md bg-zinc-200 dark:text-black"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-  value: string;
+  value: string | number;
   type: string;
 }>();
 

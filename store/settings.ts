@@ -6,7 +6,12 @@ export const useSettingsStore = defineStore(
   'settings',
   () => {
     // ============ typography ============
-    const fontSize = ref('2.75');
+    const fontSize = ref(2.75);
+    function setFontSize(value: string) {
+      if (typeof value === 'string' && value) {
+        fontSize.value = Number(value);
+      }
+    }
     const fontFamily = ref<FontFamily>('PT Mono');
     const fontFamilyList = ref<FontFamily[]>([
       'PT Mono',
@@ -14,12 +19,11 @@ export const useSettingsStore = defineStore(
       'PT Serif',
     ]);
     const maxLineLength = ref(30);
-    function setFontSize(value: string) {
-      if (value) {
-        fontSize.value = value;
+    function setMaxLineLength(value: string) {
+      if (typeof value === 'string' && value) {
+        maxLineLength.value = Number(value);
       }
     }
-
     //  ============ gameplay ============
     const isFreedomMode = ref(false);
     function turnOnFreedomMode() {
@@ -70,6 +74,7 @@ export const useSettingsStore = defineStore(
       fontFamily,
       fontFamilyList,
       maxLineLength,
+      setMaxLineLength,
       isFreedomMode,
       turnOnFreedomMode,
       turnOffFreedomMode,
