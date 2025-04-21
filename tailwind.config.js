@@ -5,9 +5,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        mono: ['PT Mono', 'monospaced'],
-        serif: ['PT Serif', 'serif'],
-        sans: ['PT Sans', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospaced'],
+        serif: ['Roboto Serif', 'serif'],
+        sans: ['Oswald', 'sans-serif'],
       },
     },
   },
