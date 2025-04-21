@@ -5,7 +5,8 @@
     </template>
     <template v-slot:heading>Длина строки</template>
     <template v-slot:description
-      >Устанавливает максимальный размер строки
+      >Устанавливает максимальный размер строки. Максимальный размер равный 0,
+      будет занимать всё доступное пространство.
     </template>
     <template v-slot:form-input>
       <InputUi

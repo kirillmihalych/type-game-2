@@ -1,6 +1,8 @@
 <template>
   <div class="grid grid-rows-[1rem_auto] gap-1">
-    <p v-if="!inputValue" class="text-red-500 text-xs">{{ errorMsg }}</p>
+    <p v-if="!inputValue && inputValue !== 0" class="text-red-500 text-xs">
+      {{ errorMsg }}
+    </p>
     <p v-else class="text-red-500 text-xs"></p>
     <input
       :type="props.type"

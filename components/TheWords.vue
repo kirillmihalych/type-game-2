@@ -1,7 +1,7 @@
 <template>
   <div
     ref="words-wrapper"
-    class="relative overflow-hidden"
+    class="relative w-full overflow-hidden"
     :style="wrapperStyle"
   >
     <FocusWarning :is-input-focused="props.isInputFocused" />
@@ -56,11 +56,14 @@ const wrapperBounding = reactive({
 });
 
 const ROWS_NUMBER = 3;
+const maxLineWidth = computed(() => {
+  return settings.maxLineLength === 0 ? '100%' : settings.maxLineLength + 'ch';
+});
 const wrapperStyle = computed(() => {
   return {
     height: rowHeight.value * ROWS_NUMBER + 'px',
     fontSize: settings.fontSize + 'rem',
-    maxWidth: settings.maxLineLength + 'ch',
+    maxWidth: maxLineWidth.value,
   };
 });
 
