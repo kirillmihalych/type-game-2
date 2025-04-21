@@ -1,7 +1,7 @@
 <template>
   <div
     v-show="props.isInputFocused"
-    class="absolute bg-current rounded-md"
+    class="absolute bg-current rounded-md w-[0.125rem]"
     :class="[
       { ['transition-[left,top]']: settings.isTheCaretSmooth },
       settings.isTheCaretSmooth && settings.theCaretPace === 'быстрый'
@@ -31,7 +31,6 @@ const caretStyle = computed(() => {
     left: caretStore.caretPos.left + 'px',
     top: caretStore.caretPos.top + 'px',
     height: caretStore.caretHeight + 'px',
-    width: caretStore.caretWidth + 'px',
   };
 });
 </script>

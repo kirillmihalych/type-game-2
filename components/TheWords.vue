@@ -7,7 +7,7 @@
     <FocusWarning :is-input-focused="props.isInputFocused" />
     <TheCaret :is-input-focused="props.isInputFocused" />
     <div
-      class="flex flex-wrap leading-snug tracking-wide gap-x-[1ch]"
+      class="flex flex-wrap tracking-wide leading-snug gap-x-[1ch]"
       :class="!props.isInputFocused ? 'blur-sm' : 'blur-none'"
       :style="wordsListStyle"
     >

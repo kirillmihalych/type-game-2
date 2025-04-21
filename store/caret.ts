@@ -16,10 +16,10 @@ export const useCaretStore = defineStore('caret', () => {
   const settings = useSettingsStore();
 
   const caretHeight = computed(() => {
-    return Number(settings.fontSize) * 16 * 1.375;
+    return settings.fontSize * 16 * 1.375;
   });
   const caretWidth = computed(() => {
-    return Number(settings.fontSize) * 16 * 0.0675;
+    return settings.fontSize * 16 * 0.0675;
   });
 
   const caretPos = ref<Coords>({
