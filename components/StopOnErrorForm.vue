@@ -11,26 +11,20 @@
     <template v-slot:form-input>
       <ul class="flex gap-2 transition-colors">
         <li class="flex-1">
-          <button
-            class="w-full border-2 rounded-md hover:border-black/75"
+          <ButtonUi
             @click="settings.turnOnStopOnError"
-            :class="[
-              settings.isStopOnError ? 'border-black' : 'border-black/25',
-            ]"
+            :is-option-turned-on="settings.isStopOnError"
           >
-            ВКЛ
-          </button>
+            вкл
+          </ButtonUi>
         </li>
         <li class="flex-1">
-          <button
-            class="w-full border-2 rounded-md hover:border-black/75"
+          <ButtonUi
             @click="settings.turnOffStopOnError"
-            :class="[
-              !settings.isStopOnError ? 'border-black' : 'border-black/25',
-            ]"
+            :is-option-turned-on="!settings.isStopOnError"
           >
-            ВЫКЛ
-          </button>
+            выкл
+          </ButtonUi>
         </li>
       </ul>
     </template>

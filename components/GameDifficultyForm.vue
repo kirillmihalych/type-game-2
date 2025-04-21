@@ -14,19 +14,15 @@
         <li
           v-for="difficulty in settings.gameDifficulties"
           :key="difficulty"
-          class="flex-1 border-2 rounded-md hover:bg-slate-100"
-          :class="[
-            difficulty === settings.selectedGameDifficulty
-              ? 'border-black'
-              : 'border-black/25',
-          ]"
+          class="flex-1"
         >
-          <button
+          <ButtonUi
             @click="settings.setGameDifficulty(difficulty)"
-            class="w-full"
+            :item-key="difficulty"
+            :active-key="settings.selectedGameDifficulty"
           >
             {{ difficulty }}
-          </button>
+          </ButtonUi>
         </li>
       </ul>
     </template>

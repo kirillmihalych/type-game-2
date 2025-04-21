@@ -1,6 +1,6 @@
 export type FontFamily = 'PT Mono' | 'PT Sans' | 'PT Serif';
 export type GameDifficulty = 'стандартный' | 'сложный' | 'эксперт';
-export type PaceType = 'медленный' | 'умеренный' | 'быстрый';
+export type PaceType = 'выкл' | 'медленный' | 'умеренный' | 'быстрый';
 
 export const useSettingsStore = defineStore(
   'settings',
@@ -50,7 +50,12 @@ export const useSettingsStore = defineStore(
     function turnOffTheCaretSmooth() {
       isTheCaretSmooth.value = false;
     }
-    const paceTypes = ref<PaceType[]>(['медленный', 'умеренный', 'быстрый']);
+    const paceTypes = ref<PaceType[]>([
+      'выкл',
+      'медленный',
+      'умеренный',
+      'быстрый',
+    ]);
     const theCaretPace = ref<PaceType>('быстрый');
     function setTheCaretPace(paceType: PaceType) {
       if (!isTheCaretSmooth.value) {

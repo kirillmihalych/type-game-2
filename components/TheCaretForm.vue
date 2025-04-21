@@ -10,28 +10,17 @@
     <template v-slot:form-input>
       <ul class="flex gap-2">
         <li
-          class="flex-1 border-2 rounded-md hover:bg-slate-100"
-          :class="[
-            !settings.isTheCaretSmooth ? 'border-black' : 'border-black/25',
-          ]"
-        >
-          <button @click="settings.turnOffTheCaretSmooth" class="w-full">
-            выкл
-          </button>
-        </li>
-        <li
           v-for="paceType in settings.paceTypes"
           :key="paceType"
-          class="flex-1 border-2 rounded-md hover:bg-slate-100"
-          :class="[
-            paceType === settings.theCaretPace && settings.isTheCaretSmooth
-              ? 'border-black'
-              : 'border-black/25',
-          ]"
+          class="flex-1"
         >
-          <button @click="settings.setTheCaretPace(paceType)" class="w-full">
+          <ButtonUi
+            @click="settings.setTheCaretPace(paceType)"
+            :item-key="paceType"
+            :active-key="settings.theCaretPace"
+          >
             {{ paceType }}
-          </button>
+          </ButtonUi>
         </li>
       </ul>
     </template>

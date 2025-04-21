@@ -10,21 +10,15 @@
         <li
           v-for="fontFamily in settings.fontFamilyList"
           :key="fontFamily"
-          class="flex-1 border-2 rounded-md hover:bg-slate-100"
-          :class="[
-            settings.fontFamily === 'PT Mono'
-              ? 'font-mono'
-              : settings.fontFamily === 'PT Serif'
-              ? 'font-serif'
-              : 'font-sans',
-            fontFamily === settings.fontFamily
-              ? 'border-black'
-              : 'border-black/25',
-          ]"
+          class="flex-1"
         >
-          <button @click="settings.fontFamily = fontFamily" class="w-full">
+          <ButtonUi
+            :item-key="fontFamily"
+            :active-key="settings.fontFamily"
+            @click="settings.fontFamily = fontFamily"
+          >
             {{ fontFamily }}
-          </button>
+          </ButtonUi>
         </li>
       </ul>
     </template>
