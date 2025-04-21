@@ -1,6 +1,9 @@
 <template>
   <div>
-    <form class="grid lg:grid-cols-2 lg:items-center mb-4" @submit.prevent>
+    <form
+      class="grid lg:grid-cols-2 lg:items-center lg:gap-4 mb-4"
+      @submit.prevent
+    >
       <div>
         <div class="flex items-center gap-2">
           <slot name="header-icon" />

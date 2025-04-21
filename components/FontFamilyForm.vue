@@ -6,7 +6,7 @@
     <template v-slot:heading>Шрифт</template>
     <template v-slot:description>Установить шрифт</template>
     <template v-slot:form-input>
-      <ul class="flex gap-2">
+      <ul class="flex flex-col md:flex-row flex-wrap gap-2">
         <li
           v-for="fontFamily in settings.fontFamilyList"
           :key="fontFamily"

@@ -1,6 +1,6 @@
 <template>
   <section>
-    <h2 class="hover:text-purple-500 transition-colors text-lg">
+    <h2 class="hover:text-black transition-colors text-lg font-bold">
       <button @click="toggle" class="flex items-center gap-2 mb-4">
         <Icon
           name="lucide:chevron-right"

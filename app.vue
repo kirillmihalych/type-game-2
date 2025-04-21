@@ -1,6 +1,6 @@
 <template>
   <div
-    class="dark:bg-neutral-900 dark:text-white px-4 min-h-dvh md:px-8 lg:px-12"
+    class="text-zinc-800 dark:bg-neutral-900 dark:text-white px-4 min-h-dvh md:px-8 lg:px-12"
     :class="[
       settings.fontFamily === 'PT Mono'
         ? 'font-mono'

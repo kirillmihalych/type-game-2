@@ -8,7 +8,7 @@
       >Плавность переноса курсора от символа к символу</template
     >
     <template v-slot:form-input>
-      <ul class="flex gap-2">
+      <ul class="flex flex-wrap gap-2">
         <li
           v-for="paceType in settings.paceTypes"
           :key="paceType"

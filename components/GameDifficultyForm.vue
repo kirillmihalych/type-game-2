@@ -10,7 +10,7 @@
       опыт печатания.</template
     >
     <template v-slot:form-input>
-      <ul class="flex gap-2">
+      <ul class="flex flex-wrap gap-2">
         <li
           v-for="difficulty in settings.gameDifficulties"
           :key="difficulty"

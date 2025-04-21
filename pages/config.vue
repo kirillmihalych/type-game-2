@@ -1,5 +1,5 @@
 <template>
-  <div class="p-4 min-h-dvh h-full">
+  <div class="min-h-dvh h-full">
     <div>
       <h1 class="text-2xl mb-6">Настройки</h1>
       <ConfigItem>
