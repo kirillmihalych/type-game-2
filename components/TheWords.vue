@@ -7,7 +7,8 @@
     <FocusWarning :is-input-focused="props.isInputFocused" />
     <TheCaret :is-input-focused="props.isInputFocused" />
     <div
-      class="flex flex-wrap tracking-wide leading-snug gap-x-[1ch]"
+      ref="word-list"
+      class="flex flex-wrap tracking-wide leading-snug gap-x-[1ch] transition-all duration-75"
       :class="!props.isInputFocused ? 'blur-sm' : 'blur-none'"
       :style="wordsListStyle"
     >
@@ -15,6 +16,7 @@
         <WordCard
           :word="word"
           :word-index="wordIdx"
+          :word-list="wordList"
           :input="props.input"
           :input-history="inputHistory"
           :current-word-index="props.currentWordIndex"
@@ -53,6 +55,7 @@ const wrapperBounding = reactive({
   left: wrapperLeft,
   top: wrapperTop,
 });
+const wordList = useTemplateRef('word-list');
 
 const ROWS_NUMBER = 3;
 const maxLineWidth = computed(() => {

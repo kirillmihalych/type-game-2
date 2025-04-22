@@ -18,9 +18,9 @@ export const useCaretStore = defineStore('caret', () => {
 
   const duration = computed(() => {
     return settings.theCaretPace === 'медленный'
-      ? 1000
+      ? 150
       : settings.theCaretPace === 'умеренный'
-      ? 500
+      ? 100
       : settings.theCaretPace === 'быстрый'
       ? 75
       : 0;
@@ -42,11 +42,12 @@ export const useCaretStore = defineStore('caret', () => {
   function updateStartWordCoords(charCoords: Coords, parentCoords: Coords) {
     const newLeft = charCoords.left - parentCoords.left;
     let newTop = charCoords.top - parentCoords.top;
-    if (newTop === caretHeight.value * 2) {
+    if (newTop >= caretHeight.value * 2) {
       wordsTopMargin.value -= caretHeight.value;
-      newTop -= caretHeight.value;
+      baseCaret.value = [newLeft, baseCaret.value[1]];
+    } else {
+      baseCaret.value = [newLeft, newTop];
     }
-    baseCaret.value = [newLeft, newTop];
   }
 
   function updateCharCoords(
@@ -55,11 +56,19 @@ export const useCaretStore = defineStore('caret', () => {
   ): void {
     const newLeft = bounding.left - parentCoords.left + bounding.width;
     let newTop = bounding.top - parentCoords.top;
-    if (newTop === caretHeight.value * 2) {
+
+    // если слово переносится с линию на линию, то прокрутить
+    // а курсор оставить на том же ряду
+    if (newTop >= caretHeight.value * 2) {
       wordsTopMargin.value -= caretHeight.value;
-      newTop -= caretHeight.value;
+      baseCaret.value = [newLeft, baseCaret.value[1]];
+    } else if (newTop >= caretHeight.value && baseCaret.value[1] !== 0) {
+      // нужно, чтобы переход со второго на третий не дёргался
+      baseCaret.value = [newLeft, baseCaret.value[1]];
+    } else {
+      // нужно, чтобы переносить курсор с первого ряда
+      baseCaret.value = [newLeft, newTop];
     }
-    baseCaret.value = [newLeft, newTop];
   }
 
   function moveCaret(
@@ -82,7 +91,6 @@ export const useCaretStore = defineStore('caret', () => {
     const newLeft = baseCaret.value[0];
     const newTop = baseCaret.value[1] - caretHeight.value;
     baseCaret.value = [newLeft, newTop];
-    console.log(baseCaret.value[1], caretHeight.value, baseCaret.value);
   }
 
   return {

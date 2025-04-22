@@ -31,6 +31,7 @@ import type { ShallowRef } from 'vue';
 const props = defineProps<{
   word: string;
   wordIndex: number;
+  wordList: HTMLDivElement | null;
   input: string;
   inputHistory: string[];
   currentWordIndex: number;
@@ -40,6 +41,7 @@ const props = defineProps<{
 const {
   input,
   word,
+  wordList,
   wordIndex,
   inputHistory,
   currentWordIndex,
@@ -101,6 +103,7 @@ const isCurrentWord = computed(() => {
 
 function moveCaretText() {
   if (isCurrentWord.value && !isExtra.value && charBoundings.value) {
+    // мол подожди когда лист совершит транзишн, потом только передавай координаты
     const charCoords = charBoundings.value[props.currentCharIndex];
     caretStore.moveCaret(props.input, charCoords, props.wrapperBounding);
   }
@@ -148,6 +151,10 @@ function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
     if (props.wrapperBounding.top || caretStore.wordsTopMargin) {
       getCharBoundings();
     }
+  });
+
+  useEventListener(wordList, 'transitionend', () => {
+    getCharBoundings();
   });
 
   return { charBoundings };
