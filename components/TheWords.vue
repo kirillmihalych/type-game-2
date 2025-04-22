@@ -8,8 +8,13 @@
     <TheCaret :is-input-focused="props.isInputFocused" />
     <div
       ref="word-list"
-      class="flex flex-wrap tracking-wide leading-snug gap-x-[1ch] transition-all duration-75"
-      :class="!props.isInputFocused ? 'blur-sm' : 'blur-none'"
+      class="flex flex-wrap tracking-wide leading-snug gap-x-[1ch]"
+      :class="[
+        !props.isInputFocused ? 'blur-sm' : 'blur-none',
+        settings.isLineScrollSmooth
+          ? 'transition-all duration-150'
+          : 'transition-none',
+      ]"
       :style="wordsListStyle"
     >
       <div v-for="(word, wordIdx) in words" :key="wordIdx">

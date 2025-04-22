@@ -67,6 +67,15 @@ export const useSettingsStore = defineStore(
       }
       theCaretPace.value = paceType;
     }
+    // === animation ===
+    const isLineScrollSmooth = ref(true);
+    function turnOnSmoothScroll() {
+      isLineScrollSmooth.value = true;
+    }
+
+    function turnOffSmoothScroll() {
+      isLineScrollSmooth.value = false;
+    }
 
     return {
       fontSize,
@@ -89,6 +98,9 @@ export const useSettingsStore = defineStore(
       theCaretPace,
       setTheCaretPace,
       turnOffTheCaretSmooth,
+      isLineScrollSmooth,
+      turnOnSmoothScroll,
+      turnOffSmoothScroll,
     };
   },
   {
@@ -101,6 +113,7 @@ export const useSettingsStore = defineStore(
         'isStopOnError',
         'selectedGameDifficulty',
         'isTheCaretSmooth',
+        'isLineScrollSmooth',
         'theCaretPace',
       ],
     },

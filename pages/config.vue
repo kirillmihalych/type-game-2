@@ -19,9 +19,10 @@
         </template>
       </ConfigItem>
       <ConfigItem>
-        <template v-slot:header> Курсор </template>
+        <template v-slot:header> Анимации </template>
         <template v-slot:main>
           <TheCaretForm />
+          <SmoothScrollForm />
         </template>
       </ConfigItem>
     </div>
