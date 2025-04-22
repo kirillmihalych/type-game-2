@@ -1,6 +1,7 @@
 <template>
   <div class="grid gap-4 mt-[75px]">
     <TheStats
+      class="place-self-center"
       :text="text"
       :input="gameInput"
       :curr-history="currHistory"
@@ -18,6 +19,16 @@
       :current-word-index="currentWordIndex"
       :current-char-index="currentCharIndex"
     />
+
+    <button
+      class="flex items-center w-fit place-self-center opacity-50 hover:opacity-80"
+      @click="resetGame"
+    >
+      <Icon name="lucide:rotate-cw" size="1.5rem" />
+    </button>
+    <p class="text-xs opacity-50 place-self-center">
+      <span class="px-2 bg-zinc-400">enter</span> - начать заново
+    </p>
     <input
       ref="input"
       type="text"
@@ -160,6 +171,9 @@ function getQuote() {
 function startGame() {
   isGameStarted.value = true;
 }
+
+const { enter } = useMagicKeys();
+whenever(enter, () => resetGame());
 
 function resetGame() {
   gameInput.value = '';
