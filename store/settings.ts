@@ -6,7 +6,7 @@ export const useSettingsStore = defineStore(
   'settings',
   () => {
     // ============ typography ============
-    const fontSize = ref(2.75);
+    const fontSize = ref(2);
     function setFontSize(value: string) {
       if (typeof value === 'string' && value) {
         fontSize.value = Number(value);
@@ -18,7 +18,7 @@ export const useSettingsStore = defineStore(
       'PT Sans',
       'PT Serif',
     ]);
-    const maxLineLength = ref(30);
+    const maxLineLength = ref(0);
     function setMaxLineLength(value: string) {
       if (typeof value === 'string' && value) {
         maxLineLength.value = Number(value);
@@ -32,7 +32,7 @@ export const useSettingsStore = defineStore(
     function turnOffFreedomMode() {
       isFreedomMode.value = false;
     }
-    const isStopOnError = ref(false);
+    const isStopOnError = ref(true);
     function turnOnStopOnError() {
       isStopOnError.value = true;
     }
