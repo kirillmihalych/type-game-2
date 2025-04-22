@@ -16,10 +16,18 @@ interface CharBounding {
 export const useCaretStore = defineStore('caret', () => {
   const settings = useSettingsStore();
 
-  const duration = 75;
+  const duration = computed(() => {
+    return settings.theCaretPace === 'медленный'
+      ? 1000
+      : settings.theCaretPace === 'умеренный'
+      ? 500
+      : settings.theCaretPace === 'быстрый'
+      ? 75
+      : 0;
+  });
   const baseCaret = shallowRef([0, 0]);
   const caret = useTransition(baseCaret, {
-    duration,
+    duration: duration,
     transition: TransitionPresets.easeOutExpo,
   });
 
