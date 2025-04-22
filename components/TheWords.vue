@@ -45,7 +45,6 @@ const props = defineProps<{
 }>();
 
 const caretStore = useCaretStore();
-const rowHeight = ref(caretStore.caretHeight);
 
 const settings = useSettingsStore();
 const wordsWrapper = useTemplateRef('words-wrapper');
@@ -61,40 +60,23 @@ const maxLineWidth = computed(() => {
 });
 const wrapperStyle = computed(() => {
   return {
-    height: rowHeight.value * ROWS_NUMBER + 'px',
+    height: caretStore.caretHeight * ROWS_NUMBER + 'px',
     fontSize: settings.fontSize + 'rem',
     maxWidth: maxLineWidth.value,
   };
 });
 
-const wordsTopMargin = ref(0);
 const wordsListStyle = computed(() => {
   return {
-    marginTop: wordsTopMargin.value + 'px',
+    marginTop: caretStore.wordsTopMargin + 'px',
   };
-});
-
-const isCaretOnThirdRow = computed(() => {
-  return caretStore.caretPos.top === rowHeight.value * 2;
-});
-function scrollRows() {
-  wordsTopMargin.value -= rowHeight.value;
-}
-function adjustCaretPos() {
-  caretStore.caretPos.top -= caretStore.caretHeight;
-}
-watchEffect(() => {
-  if (isCaretOnThirdRow.value) {
-    scrollRows();
-    adjustCaretPos();
-  }
 });
 
 const isStartPosition = computed(() => {
   return props.currentWordIndex === 0 && !props.input;
 });
 function resetStyles() {
-  wordsTopMargin.value = 0;
+  caretStore.wordsTopMargin = 0;
 }
 watchEffect(() => {
   if (isStartPosition.value) {

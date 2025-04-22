@@ -145,7 +145,7 @@ function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
   });
 
   watchEffect(() => {
-    if (props.wrapperBounding.top) {
+    if (props.wrapperBounding.top || caretStore.wordsTopMargin) {
       getCharBoundings();
     }
   });

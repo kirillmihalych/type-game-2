@@ -1,4 +1,5 @@
 import { useSettingsStore } from './settings';
+import { TransitionPresets, useTransition } from '@vueuse/core';
 
 interface Coords {
   left: number;
@@ -15,30 +16,42 @@ interface CharBounding {
 export const useCaretStore = defineStore('caret', () => {
   const settings = useSettingsStore();
 
+  const duration = 75;
+  const baseCaret = shallowRef([0, 0]);
+  const caret = useTransition(baseCaret, {
+    duration,
+    transition: TransitionPresets.easeOutExpo,
+  });
+
   const caretHeight = computed(() => {
     return settings.fontSize * 16 * 1.375;
   });
   const caretWidth = computed(() => {
     return settings.fontSize * 16 * 0.0675;
   });
+  const wordsTopMargin = ref(0);
 
-  const caretPos = ref<Coords>({
-    left: 0,
-    top: 0,
-  });
-
-  function getStartWordCoords(charCoords: Coords, parentCoords: Coords) {
-    return {
-      left: charCoords.left - parentCoords.left,
-      top: charCoords.top - parentCoords.top,
-    };
+  function updateStartWordCoords(charCoords: Coords, parentCoords: Coords) {
+    const newLeft = charCoords.left - parentCoords.left;
+    let newTop = charCoords.top - parentCoords.top;
+    if (newTop === caretHeight.value * 2) {
+      wordsTopMargin.value -= caretHeight.value;
+      newTop -= caretHeight.value;
+    }
+    baseCaret.value = [newLeft, newTop];
   }
 
-  function getCharCoords(bounding: CharBounding, parentCoords: Coords): Coords {
-    return {
-      left: bounding.left - parentCoords.left + bounding.width,
-      top: bounding.top - parentCoords.top,
-    };
+  function updateCharCoords(
+    bounding: CharBounding,
+    parentCoords: Coords
+  ): void {
+    const newLeft = bounding.left - parentCoords.left + bounding.width;
+    let newTop = bounding.top - parentCoords.top;
+    if (newTop === caretHeight.value * 2) {
+      wordsTopMargin.value -= caretHeight.value;
+      newTop -= caretHeight.value;
+    }
+    baseCaret.value = [newLeft, newTop];
   }
 
   function moveCaret(
@@ -47,16 +60,30 @@ export const useCaretStore = defineStore('caret', () => {
     parentCoords: Coords
   ) {
     if (!input) {
-      caretPos.value = getStartWordCoords(charBounding, parentCoords);
+      updateStartWordCoords(charBounding, parentCoords);
     } else {
-      caretPos.value = getCharCoords(charBounding, parentCoords);
+      updateCharCoords(charBounding, parentCoords);
     }
   }
 
   function placeCaretStart() {
-    caretPos.value.left = 0;
-    caretPos.value.top = 0;
+    baseCaret.value = [0, 0];
   }
 
-  return { caretPos, caretHeight, caretWidth, moveCaret, placeCaretStart };
+  function adjustCaretPos() {
+    const newLeft = baseCaret.value[0];
+    const newTop = baseCaret.value[1] - caretHeight.value;
+    baseCaret.value = [newLeft, newTop];
+    console.log(baseCaret.value[1], caretHeight.value, baseCaret.value);
+  }
+
+  return {
+    caret,
+    caretHeight,
+    caretWidth,
+    moveCaret,
+    placeCaretStart,
+    adjustCaretPos,
+    wordsTopMargin,
+  };
 });
