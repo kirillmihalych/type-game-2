@@ -36,7 +36,7 @@
       @input="onGameInputChange"
       @keydown.delete="backspaceToPrevious"
       maxlength="20"
-      class="absolute bottom-0 right-0 opacity-0 size[1px]"
+      class="fixed bottom-0 right-0 opacity-0 size[1px]"
     />
   </div>
 </template>
