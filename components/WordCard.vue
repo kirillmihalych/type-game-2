@@ -17,7 +17,15 @@
     </div>
     <div v-if="isExtra" class="flex flex-wrap items-center">
       <div
-        :ref="(el) => console.log(el)"
+        :ref="
+          (el) => {
+            if (el) {
+              extraDom[index] = el;
+            } else {
+              extraDom = extraDom.filter((char, idx) => idx !== index);
+            }
+          }
+        "
         v-for="(extra, index) in extraChars"
         :key="index"
       >
@@ -116,19 +124,19 @@ watch(
   () => extraChars.value,
   async () => {
     await nextTick();
-    // console.log(extraDom.value);
-    // moveCaretExtra();
+    moveCaretExtra();
   },
   { immediate: true }
 );
 
-// function moveCaretExtra() {
-//   if (extraDom.value) {
-//     const extraCoords =
-//       extraDom.value[extraDom.value.length - 1].getBoundingClientRect();
-//     caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
-//   }
-// }
+function moveCaretExtra() {
+  if (extraDom.value.length) {
+    console.log(extraDom.value, extraDom.value[extraDom.value.length - 1]);
+    const extraCoords =
+      extraDom.value[extraDom.value.length - 1].getBoundingClientRect();
+    caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
+  }
+}
 
 function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
   const charBoundings = ref<CharBounding[] | undefined>([]);
