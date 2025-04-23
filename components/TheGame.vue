@@ -10,16 +10,26 @@
       :time="timer"
       :current-word-index="currentWordIndex"
     />
-    <TheWords
-      @click="setFocusToInput"
-      :text="text"
-      :input="gameInput"
-      :is-input-focused="focused"
-      :input-history="currHistory"
-      :current-word-index="currentWordIndex"
-      :current-char-index="currentCharIndex"
-    />
-
+    <div class="relative">
+      <TheWords
+        @click="setFocusToInput"
+        :text="text"
+        :input="gameInput"
+        :is-input-focused="focused"
+        :input-history="currHistory"
+        :current-word-index="currentWordIndex"
+        :current-char-index="currentCharIndex"
+      />
+      <input
+        ref="input"
+        type="text"
+        :value="gameInput"
+        @input="onGameInputChange"
+        @keydown.delete="backspaceToPrevious"
+        maxlength="20"
+        class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]"
+      />
+    </div>
     <button
       class="flex items-center w-fit place-self-center opacity-50 hover:opacity-80"
       @click="resetGame"
@@ -29,15 +39,6 @@
     <p class="text-xs opacity-50 place-self-center">
       <span class="px-2 bg-zinc-400">enter</span> - начать заново
     </p>
-    <input
-      ref="input"
-      type="text"
-      :value="gameInput"
-      @input="onGameInputChange"
-      @keydown.delete="backspaceToPrevious"
-      maxlength="20"
-      class="fixed bottom-0 right-0 opacity-0 size[1px]"
-    />
   </div>
 </template>
 
