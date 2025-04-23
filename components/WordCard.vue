@@ -153,6 +153,10 @@ function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
     }
   });
 
+  useEventListener(wordList, 'transitionstart', () => {
+    getCharBoundings();
+  });
+
   useEventListener(wordList, 'transitionend', () => {
     getCharBoundings();
   });

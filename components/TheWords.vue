@@ -12,7 +12,7 @@
       :class="[
         !props.isInputFocused ? 'blur-sm' : 'blur-none',
         settings.isLineScrollSmooth
-          ? 'transition-all duration-150'
+          ? 'transition-all duration-75 ease-linear'
           : 'transition-none',
       ]"
       :style="wordsListStyle"
