@@ -16,7 +16,11 @@
       {{ char }}
     </div>
     <div v-if="isExtra" class="flex flex-wrap items-center">
-      <div ref="extra" v-for="(extra, index) in extraChars" :key="index">
+      <div
+        :ref="(el) => console.log(el)"
+        v-for="(extra, index) in extraChars"
+        :key="index"
+      >
         {{ extra }}
       </div>
     </div>
@@ -72,7 +76,7 @@ function getCharFromDOM(
 
 const { charBoundings } = useChars(chars);
 
-const extra = useTemplateRef('extra');
+const extraDom = ref<any[]>([]);
 const { isExtra, extraChars } = useExtra(
   input,
   word,
@@ -112,19 +116,19 @@ watch(
   () => extraChars.value,
   async () => {
     await nextTick();
-    console.log(extra.value);
-    moveCaretExtra();
+    // console.log(extraDom.value);
+    // moveCaretExtra();
   },
   { immediate: true }
 );
 
-function moveCaretExtra() {
-  if (extra.value) {
-    const extraCoords =
-      extra.value[extra.value.length - 1].getBoundingClientRect();
-    caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
-  }
-}
+// function moveCaretExtra() {
+//   if (extraDom.value) {
+//     const extraCoords =
+//       extraDom.value[extraDom.value.length - 1].getBoundingClientRect();
+//     caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
+//   }
+// }
 
 function useChars(charRefs: Readonly<ShallowRef<HTMLDivElement[] | null>>) {
   const charBoundings = ref<CharBounding[] | undefined>([]);
