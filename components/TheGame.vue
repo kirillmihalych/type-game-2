@@ -107,8 +107,8 @@ function onGameInputChange(e: Event): void {
   } else {
     gameInput.value =
       (e.target as HTMLInputElement).value.length > 1
-        ? (e.target as HTMLInputElement).value
-        : (e.target as HTMLInputElement).value.normalize();
+        ? (e.target as HTMLInputElement).value.normalize()
+        : (e.target as HTMLInputElement).value;
   }
 
   if (
