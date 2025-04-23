@@ -103,22 +103,22 @@ const isCurrentWord = computed(() => {
 
 function moveCaretText() {
   if (isCurrentWord.value && !isExtra.value && charBoundings.value) {
-    // мол подожди когда лист совершит транзишн, потом только передавай координаты
     const charCoords = charBoundings.value[props.currentCharIndex];
     caretStore.moveCaret(props.input, charCoords, props.wrapperBounding);
   }
 }
 
-onUpdated(() => {
-  moveCaretExtra();
-});
-
-const isCurrentWordHasExtra = computed(() => {
-  return isExtra.value && extra.value && props.input && isCurrentWord.value;
-});
+watch(
+  () => extraChars.value,
+  async () => {
+    await nextTick();
+    moveCaretExtra();
+  },
+  { immediate: true }
+);
 
 function moveCaretExtra() {
-  if (isCurrentWordHasExtra.value && extra.value) {
+  if (isExtra.value && extra.value) {
     const extraCoords =
       extra.value[extra.value.length - 1].getBoundingClientRect();
     caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
