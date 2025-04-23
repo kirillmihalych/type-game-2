@@ -112,13 +112,14 @@ watch(
   () => extraChars.value,
   async () => {
     await nextTick();
+    console.log(extra.value);
     moveCaretExtra();
   },
   { immediate: true }
 );
 
 function moveCaretExtra() {
-  if (isExtra.value && extra.value) {
+  if (extra.value) {
     const extraCoords =
       extra.value[extra.value.length - 1].getBoundingClientRect();
     caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);
