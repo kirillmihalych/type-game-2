@@ -105,7 +105,10 @@ function onGameInputChange(e: Event): void {
   if (isSpace && isInputExist.value) {
     handleSpace();
   } else {
-    gameInput.value = (e.target as HTMLInputElement).value;
+    gameInput.value =
+      (e.target as HTMLInputElement).value.length > 1
+        ? (e.target as HTMLInputElement).value
+        : (e.target as HTMLInputElement).value.normalize();
   }
 
   if (
