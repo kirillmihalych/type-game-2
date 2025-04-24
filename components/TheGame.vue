@@ -27,9 +27,11 @@
         @input="onGameInputChange"
         @keydown.delete="backspaceToPrevious"
         maxlength="20"
-        class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]"
       />
+      <!-- class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]" -->
     </div>
+    {{ gameInput }} {{ currHistory }} {{ currentWordIndex }}
+    {{ currentCharIndex }}
     <button
       class="flex items-center w-fit place-self-center opacity-50 hover:opacity-80"
       @click="resetGame"
@@ -81,7 +83,9 @@ const isCharCorrect = computed(() => {
 });
 
 function onGameInputChange(e: Event): void {
-  const isSpace = (e as InputEvent).data === ' ';
+  const inputValue = (e.target as HTMLInputElement).value.normalize();
+  const isSpace =
+    (e as InputEvent).data === ' ' || inputValue[inputValue.length - 1] === ' ';
   const isBackToPrevious = gameInput.value === ' ' && !isSpace;
 
   if (settings.isStopOnError && !isCurrentWordCorrect.value && isSpace) {
@@ -103,12 +107,9 @@ function onGameInputChange(e: Event): void {
   }
 
   if (isSpace && isInputExist.value) {
-    handleSpace();
+    handleSpace(inputValue);
   } else {
-    gameInput.value =
-      (e.target as HTMLInputElement).value.length > 1
-        ? (e.target as HTMLInputElement).value.toWellFormed()
-        : (e.target as HTMLInputElement).value;
+    gameInput.value = inputValue;
   }
 
   if (
@@ -136,7 +137,7 @@ const isCurrentWordCorrect = computed(() => {
   return currentWord === gameInput.value;
 });
 
-function handleSpace(): void {
+function handleSpace(inputValue: string): void {
   if (
     !isCurrentWordCorrect.value &&
     settings.selectedGameDifficulty === 'сложный'
@@ -146,9 +147,9 @@ function handleSpace(): void {
   }
 
   if (currHistory.value[currentWordIndex.value]) {
-    currHistory.value[currentWordIndex.value] = gameInput.value;
+    currHistory.value[currentWordIndex.value] = inputValue.trimEnd();
   } else {
-    currHistory.value.push(gameInput.value);
+    currHistory.value.push(inputValue.trimEnd());
   }
 
   currentWordIndex.value += 1;

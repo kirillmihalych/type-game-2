@@ -104,7 +104,8 @@ const { colorCorrectChar, colorErrorChar } = useCharColor(
 
 watch(
   () => props.input,
-  () => {
+  async () => {
+    await nextTick();
     moveCaretText();
   }
 );
