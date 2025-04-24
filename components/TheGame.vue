@@ -27,11 +27,9 @@
         @input="onGameInputChange"
         @keydown.delete="backspaceToPrevious"
         maxlength="20"
+        class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]"
       />
-      <!-- class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]" -->
     </div>
-    {{ gameInput }} {{ currHistory }} {{ currentWordIndex }}
-    {{ currentCharIndex }}
     <button
       class="flex items-center w-fit place-self-center opacity-50 hover:opacity-80"
       @click="resetGame"
@@ -89,7 +87,7 @@ function onGameInputChange(e: Event): void {
   const isBackToPrevious = gameInput.value === ' ' && !isSpace;
 
   if (settings.isStopOnError && !isCurrentWordCorrect.value && isSpace) {
-    gameInput.value += '_';
+    gameInput.value = inputValue.replaceAll(/ /g, '_');
     return;
   }
 
