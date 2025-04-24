@@ -132,7 +132,6 @@ watch(
 
 function moveCaretExtra() {
   if (extraDom.value.length) {
-    console.log(extraDom.value, extraDom.value[extraDom.value.length - 1]);
     const extraCoords =
       extraDom.value[extraDom.value.length - 1].getBoundingClientRect();
     caretStore.moveCaret(props.input, extraCoords, props.wrapperBounding);

@@ -86,8 +86,18 @@ function onGameInputChange(e: Event): void {
     (e as InputEvent).data === ' ' || inputValue[inputValue.length - 1] === ' ';
   const isBackToPrevious = gameInput.value === ' ' && !isSpace;
 
-  if (settings.isStopOnError && !isCurrentWordCorrect.value && isSpace) {
+  const isWordCorrect =
+    text.value.split(' ')[currentWordIndex.value] === inputValue.trim();
+  if (settings.isStopOnError && !isWordCorrect && isSpace) {
+    console.log(
+      inputValue,
+      gameInput.value,
+      isWordCorrect
+    );
     gameInput.value = inputValue.replaceAll(/ /g, '_');
+    return;
+  } else if (isWordCorrect && isSpace && settings.isStopOnError) {
+    handleSpace(inputValue);
     return;
   }
 
