@@ -42,7 +42,7 @@ export const useCaretStore = defineStore('caret', () => {
   function updateStartWordCoords(charCoords: Coords, parentCoords: Coords) {
     const newLeft = charCoords.left - parentCoords.left;
     let newTop = charCoords.top - parentCoords.top;
-    if (newTop < 0) newTop = 0;
+    if (newTop < 0 || !newTop) newTop = 0;
 
     if (newTop >= caretHeight.value * 2) {
       baseCaret.value = [newLeft, baseCaret.value[1]];
@@ -76,6 +76,7 @@ export const useCaretStore = defineStore('caret', () => {
     charBounding: CharBounding,
     parentCoords: Coords
   ) {
+    if (!charBounding) return;
     const newTop = charBounding.top - parentCoords.top;
     if (newTop >= caretHeight.value * 2) {
       wordsTopMargin.value -= caretHeight.value;

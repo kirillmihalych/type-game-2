@@ -147,6 +147,22 @@ const isGameEnded = computed(() => {
   );
 });
 
+const isTextEnds = computed(() => {
+  return props.currentWordIndex >= props.text.split(' ').length;
+});
+
+watch(
+  () => isTextEnds.value,
+  (newValue) => {
+    if (newValue) {
+      assignResults();
+      emit('onResultsSaved', true);
+      mistakes.value = 0;
+      allChars.value = 0;
+    }
+  }
+);
+
 watch(
   () => isGameEnded.value,
   (newValue) => {

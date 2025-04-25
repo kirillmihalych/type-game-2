@@ -117,7 +117,6 @@ const isCurrentWord = computed(() => {
 function moveCaretText() {
   if (isCurrentWord.value && !isExtra.value && charBoundings.value) {
     const charCoords = charBoundings.value[props.currentCharIndex];
-
     caretStore.moveCaret(props.input, charCoords, props.wrapperBounding);
   }
 }
