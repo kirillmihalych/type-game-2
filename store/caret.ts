@@ -42,6 +42,8 @@ export const useCaretStore = defineStore('caret', () => {
   function updateStartWordCoords(charCoords: Coords, parentCoords: Coords) {
     const newLeft = charCoords.left - parentCoords.left;
     let newTop = charCoords.top - parentCoords.top;
+    if (newTop < 0) newTop = 0;
+
     if (newTop >= caretHeight.value * 2) {
       baseCaret.value = [newLeft, baseCaret.value[1]];
     } else {
@@ -59,7 +61,6 @@ export const useCaretStore = defineStore('caret', () => {
     // если слово переносится с линию на линию, то прокрутить
     // а курсор оставить на том же ряду
     if (newTop >= caretHeight.value * 2) {
-      // wordsTopMargin.value -= caretHeight.value;
       baseCaret.value = [newLeft, baseCaret.value[1]];
     } else if (newTop >= caretHeight.value && baseCaret.value[1] !== 0) {
       // нужно, чтобы переход со второго на третий не дёргался
@@ -79,6 +80,8 @@ export const useCaretStore = defineStore('caret', () => {
     if (newTop >= caretHeight.value * 2) {
       wordsTopMargin.value -= caretHeight.value;
     }
+
+    console.log(charBounding);
 
     if (!input) {
       updateStartWordCoords(charBounding, parentCoords);
