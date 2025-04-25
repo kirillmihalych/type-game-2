@@ -9,6 +9,7 @@
       @on-results-saved="resetGame"
       :time="timer"
       :current-word-index="currentWordIndex"
+      :current-char-index="currentCharIndex"
     />
     <div class="relative">
       <TheWords
@@ -207,25 +208,6 @@ watch(isGameStarted, (newValue) => {
     startTimer();
   }
 });
-
-const isGameEnded = computed(() => {
-  const words = text.value.split(' ');
-  const lastWord = words[words.length - 1];
-  const lastCharIdx = lastWord.length - 1;
-  return (
-    words.length - 1 === currentWordIndex.value &&
-    lastCharIdx === currentCharIndex.value
-  );
-});
-
-watch(
-  () => isGameEnded.value,
-  (newValue) => {
-    if (newValue) {
-      resetGame();
-    }
-  }
-);
 
 onMounted(() => {
   pauseTimer();

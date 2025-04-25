@@ -2,7 +2,6 @@
   <div class="uppercase font-bold text-sm opacity-50">
     <div v-if="isGameStarted" class="flex gap-4">
       <div class="flex items-center gap-1">
-        {{ allChars }} {{ mistakes }}
         <Icon name="lucide:gauge" />
         <p>wpm {{ wpm }}</p>
       </div>
@@ -40,6 +39,7 @@ const props = defineProps<{
   isGameStarted: boolean;
   time: number;
   currentWordIndex: number;
+  currentCharIndex: number;
 }>();
 
 const emit = defineEmits<{
@@ -137,12 +137,18 @@ function assignResults() {
   resultAccuracy.value = accuracy.value;
 }
 
-const isTextEnds = computed(() => {
-  return props.currentWordIndex >= props.text.split(' ').length;
+const isGameEnded = computed(() => {
+  const words = props.text.split(' ');
+  const lastWord = words[words.length - 1];
+  const lastCharIdx = lastWord.length - 1;
+  return (
+    words.length - 1 === props.currentWordIndex &&
+    lastCharIdx === props.currentCharIndex
+  );
 });
 
 watch(
-  () => isTextEnds.value,
+  () => isGameEnded.value,
   (newValue) => {
     if (newValue) {
       assignResults();
