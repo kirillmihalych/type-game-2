@@ -194,6 +194,7 @@ function resetGame() {
   pauseTimer();
   text.value = getQuote();
   currHistory.value = [];
+  setFocusToInput();
 }
 
 watch(isInputExist, (newValue) => {
