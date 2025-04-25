@@ -54,9 +54,7 @@ function setFocusToInput() {
 }
 
 const settings = useSettingsStore();
-const text = ref(
-  "Don't measure yourself by what you have accomplished, but by what you should have accomplished with your ability."
-);
+const text = ref('');
 const gameInput = ref('');
 const currentWordIndex = ref(0);
 const currHistory = ref<string[]>([]);
@@ -89,11 +87,7 @@ function onGameInputChange(e: Event): void {
   const isWordCorrect =
     text.value.split(' ')[currentWordIndex.value] === inputValue.trim();
   if (settings.isStopOnError && !isWordCorrect && isSpace) {
-    console.log(
-      inputValue,
-      gameInput.value,
-      isWordCorrect
-    );
+    console.log(inputValue, gameInput.value, isWordCorrect);
     gameInput.value = inputValue.replaceAll(/ /g, '_');
     return;
   } else if (isWordCorrect && isSpace && settings.isStopOnError) {
