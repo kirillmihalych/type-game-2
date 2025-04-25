@@ -26,6 +26,7 @@
         :value="gameInput"
         @input="onGameInputChange"
         @keydown.delete="backspaceToPrevious"
+        autocapitalize="off"
         maxlength="20"
         class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]"
       />
