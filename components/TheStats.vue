@@ -2,6 +2,7 @@
   <div class="uppercase font-bold text-sm opacity-50">
     <div v-if="isGameStarted" class="flex gap-4">
       <div class="flex items-center gap-1">
+        {{ allChars }} {{ mistakes }}
         <Icon name="lucide:gauge" />
         <p>wpm {{ wpm }}</p>
       </div>
@@ -115,15 +116,6 @@ watch(
       if (diff[i] !== wordSnap[i]) {
         mistakes.value += 1;
       }
-    }
-
-    if (
-      words.value[props.currentWordIndex - 1] &&
-      diff === '' &&
-      words.value[props.currentWordIndex - 1].length >
-        props.currHistory[props.currentWordIndex - 1].length
-    ) {
-      mistakes.value += 1;
     }
   }
 );
