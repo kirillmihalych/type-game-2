@@ -81,8 +81,6 @@ export const useCaretStore = defineStore('caret', () => {
       wordsTopMargin.value -= caretHeight.value;
     }
 
-    console.log(charBounding);
-
     if (!input) {
       updateStartWordCoords(charBounding, parentCoords);
     } else {
