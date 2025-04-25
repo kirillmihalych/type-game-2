@@ -88,7 +88,6 @@ function onGameInputChange(e: Event): void {
   const isWordCorrect =
     text.value.split(' ')[currentWordIndex.value] === inputValue.trim();
   if (settings.isStopOnError && !isWordCorrect && isSpace) {
-    console.log(inputValue, gameInput.value, isWordCorrect);
     gameInput.value = inputValue.replaceAll(/ /g, '_');
     return;
   } else if (isWordCorrect && isSpace && settings.isStopOnError) {
@@ -147,6 +146,10 @@ function handleSpace(inputValue: string): void {
   ) {
     resetGame();
     return;
+  }
+
+  if (inputValue.trim() === '') {
+    inputValue = '_';
   }
 
   if (currHistory.value[currentWordIndex.value]) {
