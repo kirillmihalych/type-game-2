@@ -15,7 +15,7 @@
     >
       {{ char }}
     </div>
-    <div v-if="isExtra" class="flex flex-wrap items-center">
+    <div v-if="isExtra" class="flex flex-wrap items-center text-red-500">
       <div
         :ref="
           (el) => {
