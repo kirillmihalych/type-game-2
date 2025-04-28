@@ -26,7 +26,7 @@
         <Icon :name="iconName" size="1.5rem" />
       </button>
       <NuxtLink
-        to="https://github.com/kirillmihalych"
+        to="https://github.com/kirillmihalych/type-game-nuxt"
         class="flex items-center hover:text-zinc-800 dark:hover:text-zinc-200 focus:outline-2 focus:outline-offset-2 focus:text-zinc-800 active:text-zinc-800 dark:active:text-zinc-200 dark:focus:text-zinc-200"
       >
         <Icon name="lucide:github" size="1.5rem" />
