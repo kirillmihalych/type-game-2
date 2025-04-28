@@ -6,8 +6,7 @@
           to="/"
           class="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200 focus:outline-2 focus:outline-offset-2 focus:text-zinc-800 active:text-zinc-800dark:active:text-zinc-200 dark:focus:text-zinc-200"
         >
-          <Icon name="heroicons:play" />
-          <span> Игра </span>
+          <Icon name="lucide:play" size="1.5rem" />
         </NuxtLink>
       </li>
       <li>
@@ -15,12 +14,11 @@
           to="/config"
           class="flex items-center gap-1 hover:text-zinc-800 dark:hover:text-zinc-200 focus:outline-2 focus:outline-offset-2 focus:text-zinc-800 active:text-zinc-800 dark:active:text-zinc-200 dark:focus:text-zinc-200"
         >
-          <Icon name="heroicons:cog-6-tooth" />
-          <span> Настройки </span>
+          <Icon name="lucide:settings" size="1.5rem" />
         </NuxtLink>
       </li>
     </ul>
-    <div class="flex items-center gap-2 text-zinc-600">
+    <div class="flex items-center gap-2 text-zinc-400">
       <button
         class="flex items-center hover:text-zinc-800 dark:hover:text-zinc-200 focus:outline-2 focus:outline-offset-2 focus:text-zinc-800 active:text-zinc-800 dark:active:text-zinc-200 dark:focus:text-zinc-200"
         @click="setDarkMode"
@@ -31,7 +29,7 @@
         to="https://github.com/kirillmihalych"
         class="flex items-center hover:text-zinc-800 dark:hover:text-zinc-200 focus:outline-2 focus:outline-offset-2 focus:text-zinc-800 active:text-zinc-800 dark:active:text-zinc-200 dark:focus:text-zinc-200"
       >
-        <Icon name="uil:github" size="1.75rem" />
+        <Icon name="lucide:github" size="1.5rem" />
       </NuxtLink>
     </div>
   </nav>
