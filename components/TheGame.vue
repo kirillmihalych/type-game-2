@@ -27,13 +27,17 @@
         :value="gameInput"
         @input="onGameInputChange"
         @keydown.delete="backspaceToPrevious"
+        @keydown.up.prevent
+        @keydown.down.prevent
+        @keydown.left.prevent
+        @keydown.right.prevent
         autocapitalize="off"
         maxlength="20"
         class="absolute opacity-0 left-0 top-1/2 bottom-1/2 size-[1px]"
       />
     </div>
     <button
-      class="flex items-center w-fit place-self-center opacity-50 hover:opacity-80"
+      class="flex items-center text-zinc-400 w-fit place-self-center opacity-50 hover:opacity-80"
       @click="resetGame"
     >
       <Icon name="lucide:rotate-cw" size="1.5rem" />
