@@ -2,6 +2,7 @@
   <div class="uppercase font-bold text-sm opacity-50">
     <div v-if="isGameStarted" class="flex gap-4">
       <div class="flex items-center gap-1">
+        {{ mistakes }} {{ allChars }}
         <Icon name="lucide:gauge" />
         <p>wpm {{ wpm }}</p>
       </div>
@@ -169,6 +170,16 @@ watch(
     if (newValue) {
       assignResults();
       emit('onResultsSaved', true);
+      mistakes.value = 0;
+      allChars.value = 0;
+    }
+  }
+);
+
+watch(
+  () => props.isGameStarted,
+  (newValue) => {
+    if (!newValue) {
       mistakes.value = 0;
       allChars.value = 0;
     }
